@@ -40,6 +40,14 @@ Output expectations for your work:
 - no silent output-contract changes;
 - benchmark notes whenever scientific outputs could change.
 
+Git handoff rule:
+
+When Codex changes tracked repository files, it must commit and push those changes to the GitHub
+`origin` remote before reporting the task complete. If the user explicitly requests local-only
+work, Codex may skip the push. If unrelated uncommitted changes are already present and a safe push
+is unclear, Codex must stop and ask the repository owner how to proceed rather than pushing mixed
+work.
+
 Implementation priorities:
 
 1. shared core types for manifests, statuses, and skill results;

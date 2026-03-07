@@ -49,6 +49,14 @@ flashy demos at the expense of scientific rigor.
 - `docs/REPRODUCIBILITY-POLICY.md`
 - `prompts/CODEX_MASTER_PROMPT.md`
 
+## Git handoff rule
+
+When Codex changes tracked repository files, it must commit and push those changes to the GitHub
+`origin` remote before reporting the task complete. If the user explicitly requests local-only
+work, Codex may skip the push. If unrelated uncommitted changes are already present and a safe push
+is unclear, Codex must stop and ask the repository owner how to proceed rather than pushing mixed
+work.
+
 ## Expected implementation style
 
 - Use small, auditable modules.
