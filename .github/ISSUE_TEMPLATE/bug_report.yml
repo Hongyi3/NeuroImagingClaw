@@ -1,0 +1,21 @@
+name: Bug report
+description: Report a reproducible bug in ClawNeuro
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    attributes:
+      label: Summary
+      description: What happened?
+  - type: textarea
+    attributes:
+      label: Reproduction
+      description: Exact commands, inputs, and expected vs observed behavior
+  - type: textarea
+    attributes:
+      label: Environment
+      description: OS, container image, versions, hardware, and dataset notes
+  - type: textarea
+    attributes:
+      label: Provenance artifacts
+      description: Paths or snippets from manifests, logs, or reports

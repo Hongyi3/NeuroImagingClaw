@@ -1,0 +1,36 @@
+Project: ClawNeuro
+Tagline: Standards-native, benchmark-first, reproducibility-first skill library for computational neuroscience.
+
+Summary:
+ClawNeuro is a sister project to ClawBio. It keeps ClawBio’s best ideas—skills, orchestrator, local-first execution, reproducibility bundles, agent-readable repo structure—but replaces the biology-specific substrate with neuroscience standards and benchmarked workflows.
+
+Primary v1 scope:
+- NWB / DANDI intake and validation
+- extracellular ephys preprocessing, spike sorting, and QC
+- spike-train analytics
+- public model reproduction
+- reproducibility bundles
+
+Phase 2 scope:
+- BIDS / OpenNeuro human EEG / MEG / iEEG
+- MNE / MNE-BIDS
+- BIDS Apps and fMRIPrep orchestration
+- workflow bridges
+- calcium imaging expansion
+
+Non-negotiables:
+- Use field standards, not project-local schemas.
+- Use mature backends, not reimplementations.
+- Every skill defines a reproducibility bundle.
+- Every core skill must be benchmarked.
+- Repository must be legible to coding agents.
+
+Important files:
+- README.md: project overview
+- PROJECT_PLAN.md: strategic plan
+- AGENTS.md: instructions for coding agents
+- docs/architecture.md: system design
+- docs/codex-implementation-brief.md: execution sequence
+- templates/SKILL-TEMPLATE.md: neuroscience skill spec template
+- skills/catalog.json: machine-readable skill registry
+

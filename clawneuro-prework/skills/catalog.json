@@ -1,0 +1,497 @@
+{
+  "project": "ClawNeuro",
+  "version": "0.1.0-dev",
+  "generated_by": "scripts/generate_catalog.py",
+  "skills": [
+    {
+      "name": "dandi-explorer",
+      "description": "Discover, cache, summarize, and prepare public DANDI assets for downstream neurophysiology workflows.",
+      "version": "0.1.0",
+      "status": "planned",
+      "author": "Core Team",
+      "license": "MIT",
+      "trust_tier": "core",
+      "tags": [
+        "neuroscience",
+        "reproducibility",
+        "ephys"
+      ],
+      "modality": "ephys",
+      "input_standard": [
+        "DANDI",
+        "NWB",
+        "BIDS"
+      ],
+      "output_standard": [
+        "markdown-report",
+        "json-result",
+        "dataset-card",
+        "repro-bundle"
+      ],
+      "validated_with": [
+        "DANDI metadata checks"
+      ],
+      "backends": [
+        "DANDI API / CLI"
+      ],
+      "benchmark_ids": [
+        "DANDI-001",
+        "REPORT-001"
+      ],
+      "trigger_keywords": [
+        "dandi",
+        "dandiset",
+        "public neurophysiology dataset"
+      ],
+      "requires": {
+        "python": [
+          "python>=3.11"
+        ],
+        "packages": [],
+        "bins": []
+      },
+      "path": "skills/dandi-explorer/SKILL.md",
+      "entrypoint": null,
+      "demo_paths": [],
+      "test_paths": []
+    },
+    {
+      "name": "human-ephys-bids",
+      "description": "Read, validate, and prepare BIDS-compliant human electrophysiology datasets for analysis and publication.",
+      "version": "0.1.0",
+      "status": "planned-phase-2",
+      "author": "Core Team",
+      "license": "MIT",
+      "trust_tier": "core",
+      "tags": [
+        "neuroscience",
+        "reproducibility",
+        "human-ephys"
+      ],
+      "modality": "human-ephys",
+      "input_standard": [
+        "BIDS",
+        "OpenNeuro"
+      ],
+      "output_standard": [
+        "markdown-report",
+        "json-result",
+        "bids-validation-report",
+        "repro-bundle"
+      ],
+      "validated_with": [
+        "BIDS Validator"
+      ],
+      "backends": [
+        "MNE",
+        "MNE-BIDS"
+      ],
+      "benchmark_ids": [
+        "BIDS-001",
+        "REPORT-001"
+      ],
+      "trigger_keywords": [
+        "bids eeg",
+        "openneuro",
+        "mne-bids",
+        "ieeg bids",
+        "meg bids"
+      ],
+      "requires": {
+        "python": [
+          "python>=3.11"
+        ],
+        "packages": [],
+        "bins": []
+      },
+      "path": "skills/human-ephys-bids/SKILL.md",
+      "entrypoint": null,
+      "demo_paths": [],
+      "test_paths": []
+    },
+    {
+      "name": "model-portability",
+      "description": "Assess and improve cross-simulator portability using portable model representations where appropriate.",
+      "version": "0.1.0",
+      "status": "planned",
+      "author": "Core Team",
+      "license": "MIT",
+      "trust_tier": "core",
+      "tags": [
+        "neuroscience",
+        "reproducibility",
+        "models"
+      ],
+      "modality": "models",
+      "input_standard": [
+        "NeuroML",
+        "PyNN",
+        "simulator-model"
+      ],
+      "output_standard": [
+        "markdown-report",
+        "json-result",
+        "figures",
+        "tables",
+        "repro-bundle"
+      ],
+      "validated_with": [
+        "portability checks"
+      ],
+      "backends": [
+        "NeuroML",
+        "PyNN",
+        "NEURON",
+        "NEST",
+        "Brian2"
+      ],
+      "benchmark_ids": [
+        "MODEL-PORT-001",
+        "REPORT-001"
+      ],
+      "trigger_keywords": [
+        "neuroml",
+        "pynn",
+        "portability",
+        "cross simulator"
+      ],
+      "requires": {
+        "python": [
+          "python>=3.11"
+        ],
+        "packages": [],
+        "bins": []
+      },
+      "path": "skills/model-portability/SKILL.md",
+      "entrypoint": null,
+      "demo_paths": [],
+      "test_paths": []
+    },
+    {
+      "name": "model-reproducer",
+      "description": "Fetch, configure, run, and document public computational neuroscience models to recreate canonical outputs.",
+      "version": "0.1.0",
+      "status": "planned",
+      "author": "Core Team",
+      "license": "MIT",
+      "trust_tier": "core",
+      "tags": [
+        "neuroscience",
+        "reproducibility",
+        "models"
+      ],
+      "modality": "models",
+      "input_standard": [
+        "ModelDB",
+        "Open Source Brain",
+        "simulator-model"
+      ],
+      "output_standard": [
+        "markdown-report",
+        "json-result",
+        "figures",
+        "tables",
+        "repro-bundle"
+      ],
+      "validated_with": [
+        "model-run checks"
+      ],
+      "backends": [
+        "NEURON",
+        "Brian2",
+        "NEST"
+      ],
+      "benchmark_ids": [
+        "MODEL-001",
+        "MODEL-002",
+        "REPORT-001"
+      ],
+      "trigger_keywords": [
+        "reproduce model",
+        "modeldb",
+        "open source brain",
+        "neuron model"
+      ],
+      "requires": {
+        "python": [
+          "python>=3.11"
+        ],
+        "packages": [],
+        "bins": []
+      },
+      "path": "skills/model-reproducer/SKILL.md",
+      "entrypoint": null,
+      "demo_paths": [],
+      "test_paths": []
+    },
+    {
+      "name": "neuro-orchestrator",
+      "description": "Route requests to neuroscience skills by modality, format, and intent, then assemble a unified report.",
+      "version": "0.1.0",
+      "status": "prototype",
+      "author": "Core Team",
+      "license": "MIT",
+      "trust_tier": "core",
+      "tags": [
+        "neuroscience",
+        "reproducibility",
+        "multi"
+      ],
+      "modality": "multi",
+      "input_standard": [
+        "NWB",
+        "BIDS",
+        "NeuroML",
+        "PyNN"
+      ],
+      "output_standard": [
+        "markdown-report",
+        "json-result",
+        "repro-bundle"
+      ],
+      "validated_with": [],
+      "backends": [],
+      "benchmark_ids": [
+        "ARCH-001",
+        "REPORT-001"
+      ],
+      "trigger_keywords": [
+        "route workflow",
+        "orchestrate skills",
+        "plan neuroscience workflow"
+      ],
+      "requires": {
+        "python": [
+          "python>=3.11"
+        ],
+        "packages": [],
+        "bins": []
+      },
+      "path": "skills/neuro-orchestrator/SKILL.md",
+      "entrypoint": "skills/neuro-orchestrator/orchestrator.py",
+      "demo_paths": [
+        "examples/synthetic/foundation_request.json",
+        "examples/synthetic/session_stub.nwb"
+      ],
+      "test_paths": [
+        "tests/test_catalog.py",
+        "tests/test_cli.py",
+        "tests/test_routing.py"
+      ]
+    },
+    {
+      "name": "nwb-intake",
+      "description": "Load, validate, inspect, and summarize NWB files into machine-readable manifests and human-readable reports.",
+      "version": "0.1.0",
+      "status": "planned",
+      "author": "Core Team",
+      "license": "MIT",
+      "trust_tier": "core",
+      "tags": [
+        "neuroscience",
+        "reproducibility",
+        "ephys"
+      ],
+      "modality": "ephys",
+      "input_standard": [
+        "NWB"
+      ],
+      "output_standard": [
+        "markdown-report",
+        "json-result",
+        "nwb-manifest",
+        "repro-bundle"
+      ],
+      "validated_with": [
+        "PyNWB validator",
+        "NWB Inspector"
+      ],
+      "backends": [
+        "PyNWB",
+        "NWB Inspector"
+      ],
+      "benchmark_ids": [
+        "NWB-001",
+        "REPORT-001"
+      ],
+      "trigger_keywords": [
+        "nwb file",
+        "inspect nwb",
+        "validate nwb",
+        "summarize nwb"
+      ],
+      "requires": {
+        "python": [
+          "python>=3.11"
+        ],
+        "packages": [],
+        "bins": []
+      },
+      "path": "skills/nwb-intake/SKILL.md",
+      "entrypoint": null,
+      "demo_paths": [],
+      "test_paths": []
+    },
+    {
+      "name": "repro-enforcer",
+      "description": "Create complete reproducibility bundles for any skill output, including commands, environment, checksums, and metadata.",
+      "version": "0.1.0",
+      "status": "prototype",
+      "author": "Core Team",
+      "license": "MIT",
+      "trust_tier": "core",
+      "tags": [
+        "neuroscience",
+        "reproducibility",
+        "multi"
+      ],
+      "modality": "multi",
+      "input_standard": [
+        "any"
+      ],
+      "output_standard": [
+        "repro-bundle"
+      ],
+      "validated_with": [
+        "bundle-integrity checks"
+      ],
+      "backends": [],
+      "benchmark_ids": [
+        "REPORT-001",
+        "REPRO-001"
+      ],
+      "trigger_keywords": [
+        "reproducibility bundle",
+        "export environment",
+        "checksums"
+      ],
+      "requires": {
+        "python": [
+          "python>=3.11"
+        ],
+        "packages": [],
+        "bins": []
+      },
+      "path": "skills/repro-enforcer/SKILL.md",
+      "entrypoint": "skills/repro-enforcer/repro_enforcer.py",
+      "demo_paths": [
+        "examples/synthetic/repro_seed_report.md",
+        "examples/synthetic/repro_seed_result.json"
+      ],
+      "test_paths": [
+        "tests/test_catalog.py",
+        "tests/test_cli.py",
+        "tests/test_provenance.py"
+      ]
+    },
+    {
+      "name": "spike-pipeline",
+      "description": "Run a standards-aware extracellular electrophysiology workflow with preprocessing, spike sorting, QC, and reporting.",
+      "version": "0.1.0",
+      "status": "planned",
+      "author": "Core Team",
+      "license": "MIT",
+      "trust_tier": "core",
+      "tags": [
+        "neuroscience",
+        "reproducibility",
+        "ephys"
+      ],
+      "modality": "ephys",
+      "input_standard": [
+        "NWB",
+        "raw-ephys"
+      ],
+      "output_standard": [
+        "markdown-report",
+        "json-result",
+        "figures",
+        "tables",
+        "repro-bundle"
+      ],
+      "validated_with": [
+        "NWB Inspector",
+        "pipeline-specific QC"
+      ],
+      "backends": [
+        "SpikeInterface"
+      ],
+      "benchmark_ids": [
+        "EPHYS-001",
+        "EPHYS-002",
+        "REPORT-001"
+      ],
+      "trigger_keywords": [
+        "spike sorting",
+        "ephys qc",
+        "neuropixels",
+        "extracellular"
+      ],
+      "requires": {
+        "python": [
+          "python>=3.11"
+        ],
+        "packages": [],
+        "bins": []
+      },
+      "path": "skills/spike-pipeline/SKILL.md",
+      "entrypoint": null,
+      "demo_paths": [],
+      "test_paths": []
+    },
+    {
+      "name": "spike-train-analytics",
+      "description": "Compute canonical spike-train and related electrophysiology summaries with a reproducible reporting layer.",
+      "version": "0.1.0",
+      "status": "planned",
+      "author": "Core Team",
+      "license": "MIT",
+      "trust_tier": "core",
+      "tags": [
+        "neuroscience",
+        "reproducibility",
+        "ephys"
+      ],
+      "modality": "ephys",
+      "input_standard": [
+        "NWB",
+        "sorted-units"
+      ],
+      "output_standard": [
+        "markdown-report",
+        "json-result",
+        "figures",
+        "tables",
+        "repro-bundle"
+      ],
+      "validated_with": [
+        "input-structure checks"
+      ],
+      "backends": [
+        "Elephant"
+      ],
+      "benchmark_ids": [
+        "SPIKE-001",
+        "REPORT-001"
+      ],
+      "trigger_keywords": [
+        "psth",
+        "correlogram",
+        "firing rate",
+        "synchrony",
+        "spike train analysis"
+      ],
+      "requires": {
+        "python": [
+          "python>=3.11"
+        ],
+        "packages": [],
+        "bins": []
+      },
+      "path": "skills/spike-train-analytics/SKILL.md",
+      "entrypoint": null,
+      "demo_paths": [],
+      "test_paths": []
+    }
+  ]
+}

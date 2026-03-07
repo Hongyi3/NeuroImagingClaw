@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use ClawNeuro, please cite the software release and any relevant benchmark or methods papers."
+title: "ClawNeuro"
+type: software
+version: 0.1.0
+date-released: 2026-03-07
+authors:
+  - family-names: "Maintainers"
+    given-names: "ClawNeuro"
+repository-code: "https://github.com/YOUR-ORG/ClawNeuro"
+license: "MIT"
+abstract: >
+  ClawNeuro is a planned BIDS-native neuroimaging orchestration layer that wraps trusted
+  preprocessing, QC, modeling, and provenance toolchains into auditable skills with
+  publication-ready outputs.
+keywords:
+  - neuroimaging
+  - BIDS
+  - reproducibility
+  - MRI
+  - fMRI
+  - diffusion MRI

@@ -1,0 +1,8 @@
+{
+  "query": "Inspect this NWB file and summarize it for downstream routing.",
+  "input_paths": [
+    "session_stub.nwb"
+  ],
+  "expected_skill": "nwb-intake",
+  "notes": "Synthetic routing-only fixture for the Milestone 1 foundation demo. The .nwb file is a placeholder and is not parsed."
+}

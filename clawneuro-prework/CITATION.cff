@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: "ClawNeuro"
+message: "If you use ClawNeuro, please cite the software using the metadata below."
+type: software
+authors:
+  - family-names: "YourName"
+    given-names: "YourFirstName"
+repository-code: "https://github.com/your-org/ClawNeuro"
+url: "https://github.com/your-org/ClawNeuro"
+abstract: "Standards-native, benchmark-first, reproducibility-first skill library for computational neuroscience."
+keywords:
+  - computational neuroscience
+  - neuroinformatics
+  - reproducibility
+  - NWB
+  - DANDI
+  - BIDS
+  - NeuroML
+  - spike sorting
+license: MIT
+version: 0.1.0-dev
+date-released: 2026-03-07

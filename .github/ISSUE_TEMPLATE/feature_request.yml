@@ -1,0 +1,21 @@
+name: Feature request
+description: Propose a new capability or improvement
+title: "[feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    attributes:
+      label: Problem
+      description: What research or workflow problem does this solve?
+  - type: textarea
+    attributes:
+      label: Proposed solution
+      description: How should ClawNeuro solve it?
+  - type: textarea
+    attributes:
+      label: Standards and ecosystem impact
+      description: Relevant BIDS / NiPreps / OpenNeuro / toolchain considerations
+  - type: textarea
+    attributes:
+      label: Benchmark impact
+      description: What benchmark track or acceptance criteria would need updating?

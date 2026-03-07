@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: pip install -e .[dev]
+      - name: List skills
+        run: python clawneuro.py list
+      - name: Run foundation demo
+        run: python clawneuro.py demo foundation --output .ci-foundation-demo
+      - name: Regenerate catalog
+        run: python scripts/generate_catalog.py
+      - name: Validate benchmark manifest
+        run: python scripts/validate_benchmarks.py
+      - name: Run tests
+        run: python -m pytest -q

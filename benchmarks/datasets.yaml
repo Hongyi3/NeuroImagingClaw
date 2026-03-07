@@ -1,0 +1,52 @@
+tracks:
+  smoke:
+    source: bids-examples
+    purpose: lightweight CI fixtures for BIDS validation and contract checks
+    candidates:
+      - id: bids-examples
+        title: Official BIDS examples repository
+        notes: Do not use as a substitute for scientific benchmarks
+
+  task_fmri:
+    purpose: preprocessing plus explicit task-model evaluation
+    candidates:
+      - id: ds003452
+        title: DMCC13benchmark
+        notes: small task-fMRI benchmark subset
+      - id: ds003020
+        title: Passive natural language listening task
+        notes: naturalistic task benchmark candidate
+
+  resting_state:
+    purpose: preprocessing plus connectivity-oriented postprocessing
+    candidates:
+      - id: ds003673
+        title: Yale resting-state fMRI/pupillometry
+        notes: resting-state plus simultaneous physiological context
+      - id: ds001168
+        title: 7T resting-state test-retest dataset
+        notes: candidate reproducibility stress test
+
+  diffusion:
+    purpose: diffusion preprocessing and later reconstruction validation
+    candidates:
+      - id: ds002087
+        title: Deliberate-head-movement diffusion MRI dataset
+        notes: useful for robustness testing
+      - id: ds005664
+        title: SDSU traveling subjects diffusion MRI dataset
+        notes: site variability benchmark candidate
+
+  multimodal_growth:
+    purpose: future orchestration stress tests
+    candidates:
+      - id: ds006731
+        title: Resting state and task-based functional connectivity dataset
+      - id: ds007345
+        title: Multimodal brain MRI and clinical data dataset
+
+policy:
+  freeze_versions_before_public_benchmarks: true
+  require_public_access: true
+  require_documented_acceptance_rationale: true
+  separate_smoke_from_scientific_benchmarks: true

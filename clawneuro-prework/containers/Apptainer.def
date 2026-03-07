@@ -1,0 +1,23 @@
+Bootstrap: docker
+From: python:3.11-slim
+
+%post
+    mkdir -p /workspace
+
+%files
+    pyproject.toml /workspace/pyproject.toml
+    README.md /workspace/README.md
+    src /workspace/src
+    skills /workspace/skills
+    scripts /workspace/scripts
+    benchmarks /workspace/benchmarks
+    tests /workspace/tests
+    clawneuro.py /workspace/clawneuro.py
+
+%post
+    cd /workspace
+    pip install --no-cache-dir -e .[dev]
+
+%runscript
+    cd /workspace
+    exec python clawneuro.py list

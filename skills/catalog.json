@@ -1,0 +1,239 @@
+{
+  "project": "ClawNeuro",
+  "version": "0.1.0",
+  "skills": [
+    {
+      "name": "dicom_to_bids",
+      "phase": "phase-1",
+      "status": "prototype",
+      "kind": "intake",
+      "triggers": [
+        "dicom to bids",
+        "bidsify mri data",
+        "convert scanner export"
+      ],
+      "inputs": [
+        "dicom_dir",
+        "heuristic"
+      ],
+      "outputs": [
+        "bids_root",
+        "conversion_manifest",
+        "validator_summary"
+      ],
+      "chains_to": [
+        "bids_auditor",
+        "deid_check",
+        "mriqc_report",
+        "anat_bold_prep"
+      ]
+    },
+    {
+      "name": "bids_auditor",
+      "phase": "phase-1",
+      "status": "prototype",
+      "kind": "audit",
+      "triggers": [
+        "validate bids",
+        "audit dataset",
+        "bids validator"
+      ],
+      "inputs": [
+        "bids_root"
+      ],
+      "outputs": [
+        "validator_json",
+        "audit_report",
+        "triage_checklist"
+      ],
+      "chains_to": [
+        "deid_check",
+        "mriqc_report",
+        "anat_bold_prep",
+        "diffusion_prep"
+      ]
+    },
+    {
+      "name": "deid_check",
+      "phase": "phase-1",
+      "status": "prototype",
+      "kind": "privacy",
+      "triggers": [
+        "openneuro ready",
+        "deface check",
+        "deidentify mri"
+      ],
+      "inputs": [
+        "bids_root"
+      ],
+      "outputs": [
+        "shareability_summary",
+        "export_readiness_checklist"
+      ],
+      "chains_to": [
+        "report_bundle"
+      ]
+    },
+    {
+      "name": "mriqc_report",
+      "phase": "phase-2",
+      "status": "planned",
+      "kind": "qc",
+      "triggers": [
+        "run mriqc",
+        "qc mri dataset"
+      ],
+      "inputs": [
+        "bids_root"
+      ],
+      "outputs": [
+        "mriqc_derivatives",
+        "qc_summary",
+        "run_manifest"
+      ],
+      "chains_to": [
+        "anat_bold_prep",
+        "report_bundle"
+      ]
+    },
+    {
+      "name": "anat_bold_prep",
+      "phase": "phase-2",
+      "status": "planned",
+      "kind": "preprocessing",
+      "triggers": [
+        "run fmriprep",
+        "preprocess bold"
+      ],
+      "inputs": [
+        "bids_root",
+        "prep_config"
+      ],
+      "outputs": [
+        "prep_derivatives",
+        "upstream_reports",
+        "boilerplate",
+        "run_manifest"
+      ],
+      "chains_to": [
+        "task_glm",
+        "rest_connectivity",
+        "report_bundle",
+        "repro_bundle"
+      ]
+    },
+    {
+      "name": "task_glm",
+      "phase": "phase-3",
+      "status": "planned",
+      "kind": "analysis",
+      "triggers": [
+        "task glm",
+        "first level fmri"
+      ],
+      "inputs": [
+        "prep_derivatives",
+        "stats_model"
+      ],
+      "outputs": [
+        "glm_outputs",
+        "contrast_summaries",
+        "run_manifest"
+      ],
+      "chains_to": [
+        "report_bundle",
+        "repro_bundle"
+      ]
+    },
+    {
+      "name": "rest_connectivity",
+      "phase": "phase-3",
+      "status": "planned",
+      "kind": "analysis",
+      "triggers": [
+        "rest connectivity",
+        "functional connectivity",
+        "xcp-d"
+      ],
+      "inputs": [
+        "prep_derivatives",
+        "connectivity_config"
+      ],
+      "outputs": [
+        "timeseries",
+        "matrices",
+        "qc_metrics",
+        "run_manifest"
+      ],
+      "chains_to": [
+        "report_bundle",
+        "repro_bundle"
+      ]
+    },
+    {
+      "name": "report_bundle",
+      "phase": "phase-3",
+      "status": "planned",
+      "kind": "reporting",
+      "triggers": [
+        "make report bundle",
+        "methods text",
+        "analysis dossier"
+      ],
+      "inputs": [
+        "completed_skill_outputs"
+      ],
+      "outputs": [
+        "html_report",
+        "markdown_report",
+        "tables",
+        "methods_text"
+      ],
+      "chains_to": []
+    },
+    {
+      "name": "repro_bundle",
+      "phase": "phase-3",
+      "status": "planned",
+      "kind": "provenance",
+      "triggers": [
+        "repro bundle",
+        "rerun package"
+      ],
+      "inputs": [
+        "completed_run"
+      ],
+      "outputs": [
+        "commands",
+        "lockfile",
+        "checksums",
+        "run_manifest"
+      ],
+      "chains_to": []
+    },
+    {
+      "name": "diffusion_prep",
+      "phase": "phase-4",
+      "status": "planned",
+      "kind": "preprocessing",
+      "triggers": [
+        "diffusion prep",
+        "qsiprep",
+        "dwi preprocessing"
+      ],
+      "inputs": [
+        "bids_root",
+        "diffusion_config"
+      ],
+      "outputs": [
+        "dwi_derivatives",
+        "qc_reports",
+        "run_manifest"
+      ],
+      "chains_to": [
+        "report_bundle",
+        "repro_bundle"
+      ]
+    }
+  ]
+}

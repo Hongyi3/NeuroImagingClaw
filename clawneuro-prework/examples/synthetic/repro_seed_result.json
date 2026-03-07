@@ -1,0 +1,7 @@
+{
+  "skill": "synthetic-fixture",
+  "status": "ok",
+  "summary": {
+    "purpose": "Smoke-test repro-enforcer bundle generation."
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "version": "0.1.0-dev",
+  "policy": {
+    "ci_smoke_must_be_network_free": true,
+    "release_panel_must_use_public_fixtures": true,
+    "core_skills_require_at_least_one_public_benchmark": true
+  },
+  "benchmarks": [
+    {
+      "id": "ARCH-001",
+      "name": "Catalog and routing smoke check",
+      "stage": "ci-smoke",
+      "network_required": false,
+      "targets": [
+        "neuro-orchestrator"
+      ],
+      "inputs": "Synthetic routing fixture in examples/synthetic/foundation_request.json plus repository catalog metadata",
+      "success": "Deterministic route decision selects the expected skill and the foundation demo emits a bundle"
+    },
+    {
+      "id": "NWB-001",
+      "name": "NWB intake and validation smoke",
+      "stage": "ci-smoke",
+      "network_required": false,
+      "targets": [
+        "nwb-intake"
+      ],
+      "inputs": "Tiny local NWB fixture or pinned miniature public fixture mirrored into repo tests",
+      "success": "Manifest created, validators invoked, bundle emitted"
+    },
+    {
+      "id": "DANDI-001",
+      "name": "Public DANDI dataset card generation",
+      "stage": "release-qualification",
+      "network_required": true,
+      "targets": [
+        "dandi-explorer"
+      ],
+      "inputs": "Pinned public Dandiset identifier (to freeze before release)",
+      "success": "Dataset metadata resolved and dataset card emitted"
+    },
+    {
+      "id": "EPHYS-001",
+      "name": "Spike pipeline synthetic smoke",
+      "stage": "ci-smoke",
+      "network_required": false,
+      "targets": [
+        "spike-pipeline"
+      ],
+      "inputs": "Synthetic extracellular recording fixture with fixed seed",
+      "success": "Deterministic pipeline output and QC summary"
+    },
+    {
+      "id": "EPHYS-002",
+      "name": "Public extracellular workflow qualification",
+      "stage": "release-qualification",
+      "network_required": true,
+      "targets": [
+        "spike-pipeline"
+      ],
+      "inputs": "Pinned public benchmark dataset from Allen / IBL / DANDI to be fixed before release",
+      "success": "Benchmark report and provenance pass"
+    },
+    {
+      "id": "SPIKE-001",
+      "name": "Spike-train analytics smoke",
+      "stage": "ci-smoke",
+      "network_required": false,
+      "targets": [
+        "spike-train-analytics"
+      ],
+      "inputs": "Synthetic sorted-unit fixture",
+      "success": "Expected summary tables and figures generated"
+    },
+    {
+      "id": "MODEL-001",
+      "name": "Single-model reproduction qualification",
+      "stage": "release-qualification",
+      "network_required": true,
+      "targets": [
+        "model-reproducer"
+      ],
+      "inputs": "Pinned public published model target",
+      "success": "Canonical trace or figure regenerated within declared tolerance"
+    },
+    {
+      "id": "MODEL-002",
+      "name": "Model runtime smoke",
+      "stage": "ci-smoke",
+      "network_required": false,
+      "targets": [
+        "model-reproducer"
+      ],
+      "inputs": "Tiny local toy model fixture",
+      "success": "Model run completes and provenance is captured"
+    },
+    {
+      "id": "MODEL-PORT-001",
+      "name": "Cross-simulator portability comparison",
+      "stage": "release-qualification",
+      "network_required": false,
+      "targets": [
+        "model-portability"
+      ],
+      "inputs": "Pinned portable model fixture",
+      "success": "Parity report generated with declared tolerance"
+    },
+    {
+      "id": "BIDS-001",
+      "name": "BIDS validation and round-trip smoke",
+      "stage": "phase-2",
+      "network_required": false,
+      "targets": [
+        "human-ephys-bids"
+      ],
+      "inputs": "bids-examples fixture plus pinned public OpenNeuro example before release",
+      "success": "Validation results captured and basic load/write path verified"
+    },
+    {
+      "id": "REPORT-001",
+      "name": "Bundle completeness check",
+      "stage": "ci-smoke",
+      "network_required": false,
+      "targets": [
+        "neuro-orchestrator",
+        "nwb-intake",
+        "dandi-explorer",
+        "spike-pipeline",
+        "spike-train-analytics",
+        "model-reproducer",
+        "model-portability",
+        "repro-enforcer",
+        "human-ephys-bids"
+      ],
+      "inputs": "Foundation demo output or any skill output staged through repro-enforcer",
+      "success": "report.md, result.json, figures/, tables/, and required reproducibility files exist and every generated artifact is indexed"
+    },
+    {
+      "id": "REPRO-001",
+      "name": "Reproducibility bundle integrity",
+      "stage": "ci-smoke",
+      "network_required": false,
+      "targets": [
+        "repro-enforcer"
+      ],
+      "inputs": "Synthetic report/result fixture staged through repro-enforcer",
+      "success": "Checksums cover every indexed artifact and commands, hardware metadata, environment metadata, and random seed metadata are present"
+    }
+  ]
+}

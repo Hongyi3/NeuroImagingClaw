@@ -1,0 +1,54 @@
+# ClawNeuro
+
+ClawNeuro is a planned neuroimaging-native extension of ClawBio.
+
+Core idea:
+- modular skills + orchestrator
+- local-first
+- BIDS-native
+- provenance-first
+- publication-ready outputs
+
+Do not build:
+- a monolithic LLM neuroimaging agent
+- a replacement for fMRIPrep / MRIQC / QSIPrep / XCP-D
+- a clinical system
+
+Build:
+- wrappers around trusted neuroimaging tools
+- strict skill contracts
+- BIDS Derivatives outputs
+- deterministic methods text
+- reproducibility bundles
+- benchmarkable public workflows
+
+v1 scope:
+- DICOM/NIfTI intake
+- BIDS validation and audit
+- de-identification readiness
+- MRIQC
+- anatomical + BOLD preprocessing
+- task GLM
+- resting-state connectivity post-processing
+- reporting + provenance
+
+v1.1:
+- diffusion preprocessing / reconstruction
+
+future:
+- EEG/MEG via MNE-BIDS
+- PET / ASL / broader multimodal support
+
+Non-negotiable rules:
+- BIDS first
+- no result without provenance
+- no derivative without dataset_description.json + GeneratedBy
+- no AI-generated scientific claim without traceability
+- task GLM != resting-state connectivity path
+
+Read first:
+- docs/PROJECT-CHARTER.md
+- docs/ARCHITECTURE.md
+- docs/ROADMAP.md
+- docs/BENCHMARK-SPEC.md
+- prompts/CODEX_MASTER_PROMPT.md
