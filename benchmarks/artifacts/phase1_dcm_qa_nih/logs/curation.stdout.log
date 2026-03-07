@@ -1,0 +1,46 @@
+[38;5;39mINFO    | --- dcm2bids start ---[0m
+[38;5;39mINFO    | Running the following command: /private/tmp/clawneuro-m3-bench/bin/dcm2bids -d sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In -p ID01 -o run-output/bids_dataset -c code/dcm2bids_config.json --auto_extract_entities[0m
+[38;5;39mINFO    | OS version: macOS-26.3-arm64-arm-64bit-Mach-O[0m
+[38;5;39mINFO    | Python version: 3.14.3 (v3.14.3:323c59a5e34, Feb  3 2026, 11:41:37) [Clang 16.0.0 (clang-1600.0.26.6)][0m
+[38;5;39mINFO    | dcm2bids version: 3.2.0[0m
+[38;5;39mINFO    | dcm2niix version: v1.0.20250505[0m
+[38;5;39mINFO    | Checking for software update[0m
+[38;5;226mWARNING | Checking latest version of UNFmontreal/Dcm2Bids was not possible, your machine is probably not connected to the Internet.[0m
+[38;5;226mWARNING | Checking latest version of rordenlab/dcm2niix was not possible, your machine is probably not connected to the Internet.[0m
+[38;5;39mINFO    | participant: sub-ID01[0m
+[38;5;39mINFO    | config: /private/tmp/clawneuro-m3-work/code/dcm2bids_config.json[0m
+[38;5;39mINFO    | BIDS directory: /private/tmp/clawneuro-m3-work/run-output/bids_dataset[0m
+[38;5;39mINFO    | Auto extract entities: True[0m
+[38;5;39mINFO    | Reorder entities: True[0m
+[38;5;39mINFO    | Validate BIDS: False
+[0m
+[38;5;39mINFO    | Running: dcm2niix -b y -ba y -z y -f %3s_%f_%p_%t -o run-output/bids_dataset/tmp_dcm2bids/sub-ID01 sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In[0m
+[38;5;39mINFO    | Log from dcm2niix execution[0m
+[38;5;226mWARNING | Compression will be faster with 'pigz' installed http://macappstore.org/pigz/
+Chris Rorden's dcm2niiX version v1.0.20250505  Clang17.0.0 ARM (64-bit MacOS)
+Found 608 DICOM file(s)
+Convert 150 DICOM as run-output/bids_dataset/tmp_dcm2bids/sub-ID01/006_In_DCM2NIIX_regression_test_20180918114023 (64x64x15x10)
+Convert 2 DICOM as run-output/bids_dataset/tmp_dcm2bids/sub-ID01/005_In_EPI_PE=RL_20180918121230 (72x72x5x2)
+Convert 150 DICOM as run-output/bids_dataset/tmp_dcm2bids/sub-ID01/004_In_DCM2NIIX_regression_test_20180918114023 (64x64x15x10)
+Warning: Issue870: Slice timing range of first volume: range 0..1930, TA= 1930, TR=2435.37 ms)
+Warning: Issue870: Slice timing range of 2nd volume: range 0..1932.5, TA= 1932.5, TR=2435.37 ms)
+Convert 2 DICOM as run-output/bids_dataset/tmp_dcm2bids/sub-ID01/004_In_EPI_PE=PA_20180918121230 (72x72x5x2)
+Convert 150 DICOM as run-output/bids_dataset/tmp_dcm2bids/sub-ID01/007_In_DCM2NIIX_regression_test_20180918114023 (64x64x15x10)
+Convert 2 DICOM as run-output/bids_dataset/tmp_dcm2bids/sub-ID01/006_In_EPI_PE=LR_20180918121230 (72x72x5x2)
+Convert 2 DICOM as run-output/bids_dataset/tmp_dcm2bids/sub-ID01/003_In_EPI_PE=AP_20180918121230 (72x72x5x2)
+Convert 150 DICOM as run-output/bids_dataset/tmp_dcm2bids/sub-ID01/005_In_DCM2NIIX_regression_test_20180918114023 (64x64x15x10)
+Conversion required 0.436733 seconds (0.428966 for core code).
+[0m
+[38;5;39mINFO    | SIDECAR PAIRING[0m
+[38;5;39mINFO    | sub-ID01_task-rest_bold  <-  004_In_DCM2NIIX_regression_test_20180918114023[0m
+[38;5;39mINFO    | No Pairing  <-  005_In_DCM2NIIX_regression_test_20180918114023[0m
+[38;5;39mINFO    | No Pairing  <-  006_In_DCM2NIIX_regression_test_20180918114023[0m
+[38;5;39mINFO    | No Pairing  <-  007_In_DCM2NIIX_regression_test_20180918114023[0m
+[38;5;39mINFO    | sub-ID01_dir-AP_epi  <-  003_In_EPI_PE=AP_20180918121230[0m
+[38;5;39mINFO    | sub-ID01_dir-PA_epi  <-  004_In_EPI_PE=PA_20180918121230[0m
+[38;5;39mINFO    | sub-ID01_dir-RL_epi  <-  005_In_EPI_PE=RL_20180918121230[0m
+[38;5;39mINFO    | sub-ID01_dir-LR_epi  <-  006_In_EPI_PE=LR_20180918121230[0m
+[38;5;39mINFO    | Moving acquisitions into BIDS folder "run-output/bids_dataset/sub-ID01".
+[0m
+[38;5;39mINFO    | Logs saved in run-output/bids_dataset/tmp_dcm2bids/log/sub-ID01_20260307-012948.log[0m
+[38;5;39mINFO    | --- dcm2bids end ---[0m

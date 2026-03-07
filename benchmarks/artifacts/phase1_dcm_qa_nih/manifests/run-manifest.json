@@ -1,0 +1,300 @@
+{
+  "artifacts": [
+    {
+      "description": "Target BIDS dataset root for conversion outputs.",
+      "generated_by": "dicom_to_bids",
+      "kind": "dataset",
+      "media_type": null,
+      "path": "run-output/bids_dataset"
+    },
+    {
+      "description": "Machine-readable conversion plan and execution summary.",
+      "generated_by": "dicom_to_bids",
+      "kind": "manifest",
+      "media_type": "application/json",
+      "path": "run-output/manifests/conversion-manifest.json"
+    },
+    {
+      "description": "Human-readable DICOM-to-BIDS conversion summary.",
+      "generated_by": "dicom_to_bids",
+      "kind": "report",
+      "media_type": "text/markdown",
+      "path": "run-output/report/conversion-report.md"
+    },
+    {
+      "description": "Outstanding curation and metadata review items.",
+      "generated_by": "dicom_to_bids",
+      "kind": "report",
+      "media_type": "text/markdown",
+      "path": "run-output/report/curation-checklist.md"
+    },
+    {
+      "description": "Curation stdout log.",
+      "generated_by": "dicom_to_bids",
+      "kind": "log",
+      "media_type": "text/plain",
+      "path": "run-output/logs/curation.stdout.log"
+    },
+    {
+      "description": "Curation stderr log.",
+      "generated_by": "dicom_to_bids",
+      "kind": "log",
+      "media_type": "text/plain",
+      "path": "run-output/logs/curation.stderr.log"
+    },
+    {
+      "description": "Post-conversion validator stdout log.",
+      "generated_by": "dicom_to_bids",
+      "kind": "log",
+      "media_type": "text/plain",
+      "path": "run-output/logs/bids-validator.stdout.log"
+    },
+    {
+      "description": "Post-conversion validator stderr log.",
+      "generated_by": "dicom_to_bids",
+      "kind": "log",
+      "media_type": "text/plain",
+      "path": "run-output/logs/bids-validator.stderr.log"
+    },
+    {
+      "description": "Canonical machine-readable run manifest.",
+      "generated_by": null,
+      "kind": "manifest",
+      "media_type": "application/json",
+      "path": "run-output/manifests/run-manifest.json"
+    },
+    {
+      "description": "Requested configuration snapshot for the run.",
+      "generated_by": null,
+      "kind": "config",
+      "media_type": "application/json",
+      "path": "run-output/manifests/requested-config.json"
+    },
+    {
+      "description": "Exact commands captured for this run.",
+      "generated_by": null,
+      "kind": "provenance",
+      "media_type": "text/x-shellscript",
+      "path": "run-output/provenance/commands.sh"
+    },
+    {
+      "description": "Minimal environment snapshot for reproducibility.",
+      "generated_by": null,
+      "kind": "provenance",
+      "media_type": "text/yaml",
+      "path": "run-output/provenance/environment.yml"
+    },
+    {
+      "description": "Checksums for emitted artifacts.",
+      "generated_by": null,
+      "kind": "provenance",
+      "media_type": "text/plain",
+      "path": "run-output/provenance/checksums.sha256"
+    },
+    {
+      "description": "Human-readable analysis log with warnings and notes.",
+      "generated_by": null,
+      "kind": "log",
+      "media_type": "text/markdown",
+      "path": "run-output/provenance/analysis_log.md"
+    }
+  ],
+  "benchmark_tracks": [
+    "smoke"
+  ],
+  "clawneuro_version": "0.1.0",
+  "created_at": "2026-03-07T09:29:50.021014Z",
+  "dataset_inventory": {
+    "dataset_description_path": "run-output/bids_dataset/dataset_description.json",
+    "dataset_name": "ClawNeuro curated dataset from dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2",
+    "dataset_readme_path": null,
+    "dataset_type": "raw",
+    "file_count": 10,
+    "files_by_modality": {
+      "bold": 2,
+      "fmap": 8
+    },
+    "has_dataset_description": true,
+    "modalities": [
+      "bold",
+      "fmap"
+    ],
+    "root": "run-output/bids_dataset",
+    "session_ids": [],
+    "subject_ids": [
+      "sub-ID01"
+    ]
+  },
+  "handoff_targets": [
+    "bids_auditor",
+    "deid_check",
+    "mriqc_report",
+    "anat_bold_prep"
+  ],
+  "input_state": {
+    "contains_dicom": true,
+    "dataset_description_present": false,
+    "kind": "dicom",
+    "modalities": [],
+    "notes": [
+      "Directory contains files with DICOM-like suffixes."
+    ],
+    "participant_ids": [],
+    "readable": true,
+    "root": "sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In"
+  },
+  "provenance": {
+    "commands": [
+      {
+        "argv": [
+          "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+          "-d",
+          "sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In",
+          "-p",
+          "ID01",
+          "-o",
+          "run-output/bids_dataset",
+          "-c",
+          "code/dcm2bids_config.json",
+          "--auto_extract_entities"
+        ],
+        "backend": "local_binary",
+        "duration_seconds": 0.7950429999909829,
+        "environment": {
+          "PATH": "/private/tmp/clawneuro-m3-bench/bin:/Users/hongyimac/.codex/tmp/arg0/codex-arg0cQxSfs:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/3.14/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Applications/Codex.app/Contents/Resources"
+        },
+        "exit_code": 0,
+        "finished_at": "2026-03-07T09:29:49.647751Z",
+        "name": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+        "shell_command": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids -d sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In -p ID01 -o run-output/bids_dataset -c code/dcm2bids_config.json --auto_extract_entities",
+        "started_at": "2026-03-07T09:29:48.852492Z",
+        "status": "succeeded",
+        "stderr_path": "run-output/logs/curation.stderr.log",
+        "stdout_path": "run-output/logs/curation.stdout.log",
+        "working_directory": null
+      },
+      {
+        "argv": [
+          "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno",
+          "run-output/bids_dataset",
+          "--format",
+          "json"
+        ],
+        "backend": "local_binary",
+        "duration_seconds": 0.35632150000310503,
+        "environment": {},
+        "exit_code": 0,
+        "finished_at": "2026-03-07T09:29:50.005500Z",
+        "name": "bids-validator",
+        "shell_command": "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno run-output/bids_dataset --format json",
+        "started_at": "2026-03-07T09:29:49.649193Z",
+        "status": "succeeded",
+        "stderr_path": "run-output/logs/bids-validator.stderr.log",
+        "stdout_path": "run-output/logs/bids-validator.stdout.log",
+        "working_directory": null
+      }
+    ],
+    "environment": {
+      "hostname": "HongyideMac-mini.local",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "python_executable": "/private/tmp/clawneuro-m3-bench/bin/python",
+      "python_version": "3.14.3",
+      "safe_environment": {
+        "PATH": "/Users/hongyimac/.codex/tmp/arg0/codex-arg0cQxSfs:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/3.14/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Applications/Codex.app/Contents/Resources"
+      }
+    },
+    "input_checksums": {},
+    "notes": [
+      "The Dcm2Bids request follows the upstream 3.x CLI contract with explicit participant, session, config, and output arguments."
+    ],
+    "output_checksums": {
+      "logs/bids-validator.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logs/bids-validator.stdout.log": "e5f588a6997c57e2a2dd9f5550e7907105e1f0f50da36bed9c0cbb3e8d4cf043",
+      "logs/curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logs/curation.stdout.log": "3e02c456207ac5c757a531b461e616f6058cf5cb1d88584b5366ba32d09e0f92",
+      "manifests/conversion-manifest.json": "761082619664f591a1d962a294fd634d606b642ed7532ddf14bf682be03ccb09",
+      "manifests/requested-config.json": "ffae663bda63ada5f987235c7d1ec7c95d11ebe0df3299515fcc33d3a5aa1c89",
+      "manifests/run-manifest.json": "2b639bc06719874ee01a3151a89b84c28d170b5b5e2e142b0236b9839dc6cf9b",
+      "provenance/analysis_log.md": "731620c6f00a26d012095b4b4812621ec195a7eb3c7820334cb13f104704275a",
+      "provenance/commands.sh": "8ceef57153d2cff061de90a96e2dbfa3a2a694c1f550cab70b5d23a3623ee248",
+      "provenance/environment.yml": "a114c3335d1114db058fe8107ffb35dd0bce31047f1e8349bbc5c69730d07f9b",
+      "report/conversion-report.md": "6fb3d88fda2320bc7508cbff0d9ac1f417ddbe25a57acbb935c82710152c92ce",
+      "report/curation-checklist.md": "d70b2a627b5b4f2fe1606ea16e42b0d44bb663138506170f785af77500bad800"
+    },
+    "software": [
+      {
+        "container_digest": null,
+        "container_image": null,
+        "name": "clawneuro",
+        "role": "orchestration",
+        "source": null,
+        "version": "0.1.0"
+      },
+      {
+        "container_digest": null,
+        "container_image": null,
+        "name": "dcm2bids",
+        "role": "curation",
+        "source": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+        "version": "dcm2bids version:\t3.2.0"
+      },
+      {
+        "container_digest": null,
+        "container_image": null,
+        "name": "dcm2niix",
+        "role": "conversion-dependency",
+        "source": "/private/tmp/clawneuro-m3-bench/bin/dcm2niix",
+        "version": "Chris Rorden's dcm2niiX version v1.0.20250505  Clang17.0.0 ARM (64-bit MacOS)"
+      },
+      {
+        "container_digest": null,
+        "container_image": null,
+        "name": "bids-validator-deno",
+        "role": "post-conversion-validation",
+        "source": "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno",
+        "version": "bids-validator 2.4.1"
+      }
+    ]
+  },
+  "requested_config": {
+    "auto_extract_entities": true,
+    "backend": "local_binary",
+    "conversion_image": null,
+    "curation_backend": "dcm2bids",
+    "curation_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+    "dcm2niix_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2niix",
+    "execute": true,
+    "heuristic_file": "code/dcm2bids_config.json",
+    "output_root": "run-output",
+    "participant_label": "ID01",
+    "participant_mapping_file": null,
+    "session_label": null,
+    "source_root": "sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In",
+    "validator_config": null,
+    "validator_executable": "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno",
+    "validator_image": null
+  },
+  "result_summary": "Executed wrapped Dcm2Bids/HeuDiConv planning plus post-conversion validation.",
+  "schema_version": "0.1.0",
+  "skill": {
+    "contract_path": "skills/dicom_to_bids/SKILL.md",
+    "kind": "intake",
+    "name": "dicom_to_bids",
+    "version": "0.1.0"
+  },
+  "status": "succeeded",
+  "warnings": [
+    {
+      "code": "dataset-description-synthesized",
+      "hint": "Review the dataset name and metadata before external release.",
+      "message": "A minimum dataset_description.json was synthesized before post-conversion validation.",
+      "severity": "info"
+    },
+    {
+      "code": "dcm2bids-temp-removed",
+      "hint": "The temporary Dcm2Bids workspace is internal execution state and is not part of the curated BIDS dataset.",
+      "message": "Removed upstream tmp_dcm2bids output before post-conversion validation.",
+      "severity": "info"
+    }
+  ]
+}

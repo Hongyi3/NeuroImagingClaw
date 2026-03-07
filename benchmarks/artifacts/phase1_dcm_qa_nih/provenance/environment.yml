@@ -1,0 +1,6 @@
+hostname: HongyideMac-mini.local
+platform: macOS-26.3-arm64-arm-64bit-Mach-O
+python_executable: /private/tmp/clawneuro-m3-bench/bin/python
+python_version: 3.14.3
+safe_environment:
+  PATH: /Users/hongyimac/.codex/tmp/arg0/codex-arg0cQxSfs:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/3.14/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Applications/Codex.app/Contents/Resources

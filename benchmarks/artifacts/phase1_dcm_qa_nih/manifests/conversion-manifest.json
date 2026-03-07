@@ -1,0 +1,123 @@
+{
+  "bids_root": "run-output/bids_dataset",
+  "conversion_step": {
+    "artifact_paths": [
+      "run-output/bids_dataset"
+    ],
+    "command": {
+      "argv": [
+        "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+        "-d",
+        "sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In",
+        "-p",
+        "ID01",
+        "-o",
+        "run-output/bids_dataset",
+        "-c",
+        "code/dcm2bids_config.json",
+        "--auto_extract_entities"
+      ],
+      "backend": "local_binary",
+      "duration_seconds": 0.7950429999909829,
+      "environment": {
+        "PATH": "/private/tmp/clawneuro-m3-bench/bin:/Users/hongyimac/.codex/tmp/arg0/codex-arg0cQxSfs:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/3.14/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Applications/Codex.app/Contents/Resources"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-03-07T09:29:49.647751Z",
+      "name": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+      "shell_command": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids -d sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In -p ID01 -o run-output/bids_dataset -c code/dcm2bids_config.json --auto_extract_entities",
+      "started_at": "2026-03-07T09:29:48.852492Z",
+      "status": "succeeded",
+      "stderr_path": "run-output/logs/curation.stderr.log",
+      "stdout_path": "run-output/logs/curation.stdout.log",
+      "working_directory": null
+    },
+    "description": "Primary DICOM curation command.",
+    "log_paths": [
+      "run-output/logs/curation.stdout.log",
+      "run-output/logs/curation.stderr.log"
+    ],
+    "name": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+    "notes": []
+  },
+  "curation_backend": "dcm2bids",
+  "participant_label": "ID01",
+  "runtime_evidence": {
+    "backend": "local_binary",
+    "notes": [
+      "Local execution PATH was augmented with the configured dcm2niix parent directory."
+    ],
+    "required_runtimes_resolved": true,
+    "runtime_provenance_complete": true,
+    "tools": [
+      {
+        "available": true,
+        "container_image": null,
+        "notes": [],
+        "requested_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+        "resolved_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+        "tool_name": "dcm2bids",
+        "version": "dcm2bids version:\t3.2.0",
+        "version_captured": true
+      },
+      {
+        "available": true,
+        "container_image": null,
+        "notes": [],
+        "requested_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2niix",
+        "resolved_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2niix",
+        "tool_name": "dcm2niix",
+        "version": "Chris Rorden's dcm2niiX version v1.0.20250505  Clang17.0.0 ARM (64-bit MacOS)",
+        "version_captured": true
+      },
+      {
+        "available": true,
+        "container_image": null,
+        "notes": [],
+        "requested_executable": "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno",
+        "resolved_executable": "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno",
+        "tool_name": "bids-validator-deno",
+        "version": "bids-validator 2.4.1",
+        "version_captured": true
+      }
+    ],
+    "versions_captured": true
+  },
+  "session_label": null,
+  "status": "succeeded",
+  "unresolved_metadata": [
+    "No participant/session mapping file was supplied; scanner identifiers may still require manual review."
+  ],
+  "validator_step": {
+    "artifact_paths": [],
+    "command": {
+      "argv": [
+        "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno",
+        "run-output/bids_dataset",
+        "--format",
+        "json"
+      ],
+      "backend": "local_binary",
+      "duration_seconds": 0.35632150000310503,
+      "environment": {},
+      "exit_code": 0,
+      "finished_at": "2026-03-07T09:29:50.005500Z",
+      "name": "bids-validator",
+      "shell_command": "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno run-output/bids_dataset --format json",
+      "started_at": "2026-03-07T09:29:49.649193Z",
+      "status": "succeeded",
+      "stderr_path": "run-output/logs/bids-validator.stderr.log",
+      "stdout_path": "run-output/logs/bids-validator.stdout.log",
+      "working_directory": null
+    },
+    "description": "Post-conversion BIDS validation command.",
+    "log_paths": [
+      "run-output/logs/bids-validator.stdout.log",
+      "run-output/logs/bids-validator.stderr.log"
+    ],
+    "name": "bids-validator",
+    "notes": [
+      "Validator step follows curation to surface upload-blocking issues."
+    ]
+  }
+}

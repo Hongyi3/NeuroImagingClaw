@@ -1,0 +1,87 @@
+{
+  "issues": {
+    "issues": [
+      {
+        "code": "UNKNOWN_BIDS_VERSION",
+        "severity": "warning",
+        "location": "/dataset_description.json",
+        "rule": "rules.checks.dataset.UnknownVersion"
+      },
+      {
+        "code": "JSON_KEY_RECOMMENDED",
+        "subCode": "HEDVersion",
+        "severity": "warning",
+        "location": "/dataset_description.json",
+        "issueMessage": "Field description: If HED tags are used:\nThe version of the HED schema used to validate HED tags for study.\nMay include a single schema or a base schema and one or more library schema.\n",
+        "rule": "rules.dataset_metadata.dataset_description"
+      },
+      {
+        "code": "JSON_KEY_RECOMMENDED",
+        "subCode": "GeneratedBy",
+        "severity": "warning",
+        "location": "/dataset_description.json",
+        "issueMessage": "Field description: Used to specify provenance of the dataset.\n",
+        "rule": "rules.dataset_metadata.dataset_description"
+      },
+      {
+        "code": "JSON_KEY_RECOMMENDED",
+        "subCode": "SourceDatasets",
+        "severity": "warning",
+        "location": "/dataset_description.json",
+        "issueMessage": "Field description: Used to specify the locations and relevant attributes of all source datasets (BIDS or not).\nValid keys in each object include `\"URL\"`, `\"DOI\"` (see\n[URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator)), and\n`\"Version\"` with\n[string](https://www.w3schools.com/js/js_json_datatypes.asp)\nvalues.\n",
+        "rule": "rules.dataset_metadata.dataset_description"
+      }
+    ],
+    "codeMessages": {
+      "UNKNOWN_BIDS_VERSION": "The BIDSVersion field of 'dataset_description.json' does not match a known release.\nThe BIDS Schema used for validation may be out of date.\n",
+      "JSON_KEY_RECOMMENDED": "A JSON file is missing a key listed as recommended."
+    }
+  },
+  "summary": {
+    "sessions": [],
+    "subjects": [
+      "13",
+      "14",
+      "15",
+      "12",
+      "08",
+      "01",
+      "06",
+      "07",
+      "09",
+      "10",
+      "11",
+      "16",
+      "05",
+      "02",
+      "03",
+      "04"
+    ],
+    "subjectMetadata": [
+      {
+        "participantId": "01",
+        "age": 28,
+        "sex": "M"
+      }
+    ],
+    "tasks": [
+      "mixed-gambles task"
+    ],
+    "modalities": [
+      "MRI"
+    ],
+    "secondaryModalities": [
+      "MRI_Functional",
+      "MRI_Structural"
+    ],
+    "totalFiles": 134,
+    "size": 283242,
+    "dataProcessed": false,
+    "pet": {},
+    "dataTypes": [
+      "anat",
+      "func"
+    ],
+    "schemaVersion": "1.2.1"
+  }
+}

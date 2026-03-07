@@ -29,6 +29,16 @@ from clawneuro.skills.common import finalize_skill_result
 from clawneuro.skills.deid_check.config import DeidCheckConfig
 
 
+class PolicyRuleResult(ClawBaseModel):
+    """Traceable outcome for one technical shareability rule."""
+
+    rule_id: str
+    source_policy: str
+    severity: WarningSeverity
+    passed: bool
+    message: str
+
+
 class ShareabilitySummary(ClawBaseModel):
     """Machine-readable shareability and privacy-readiness summary."""
 
@@ -38,6 +48,7 @@ class ShareabilitySummary(ClawBaseModel):
     structural_privacy_status: str
     blockers: List[str] = Field(default_factory=list)
     warnings: List[str] = Field(default_factory=list)
+    rule_results: List[PolicyRuleResult] = Field(default_factory=list)
 
 
 def _structural_files(root: Path) -> List[Path]:
@@ -74,6 +85,19 @@ def _checklist(summary: ShareabilitySummary) -> str:
     lines.append("- OpenNeuro-ready: `{0}`".format(str(summary.openneuro_ready).lower()))
     lines.append("- Structural privacy status: `{0}`".format(summary.structural_privacy_status))
     lines.append("")
+    lines.append("## Rule Results")
+    if summary.rule_results:
+        lines.extend(
+            "- [{0}] {1}: {2}".format(
+                "pass" if item.passed else item.severity.value,
+                item.rule_id,
+                item.message,
+            )
+            for item in summary.rule_results
+        )
+    else:
+        lines.append("- none")
+    lines.append("")
     lines.append("## Blockers")
     if summary.blockers:
         lines.extend("- {0}".format(item) for item in summary.blockers)
@@ -101,19 +125,57 @@ def run_deid_check(config: DeidCheckConfig) -> SkillResult:
     inventory = inspect_bids_dataset(config.bids_root)
     layout = ensure_run_layout(config.output_root)
     structural_status = _structural_privacy_status(config.bids_root)
-    blockers: List[str] = []
-    warnings: List[str] = []
+    rule_results: List[PolicyRuleResult] = [
+        PolicyRuleResult(
+            rule_id="DP001",
+            source_policy="docs/DATA-PRIVACY-POLICY.md#open-sharing-readiness",
+            severity=WarningSeverity.ERROR,
+            passed=inventory.has_dataset_description,
+            message=(
+                "dataset_description.json is present."
+                if inventory.has_dataset_description
+                else "dataset_description.json is required before claiming BIDS or OpenNeuro readiness."
+            ),
+        ),
+        PolicyRuleResult(
+            rule_id="DP002",
+            source_policy="docs/DATA-PRIVACY-POLICY.md#open-sharing-readiness",
+            severity=WarningSeverity.WARNING,
+            passed=inventory.dataset_readme_path is not None,
+            message=(
+                "A dataset README is present."
+                if inventory.dataset_readme_path is not None
+                else "A dataset README is not present; sharing context may be incomplete."
+            ),
+        ),
+        PolicyRuleResult(
+            rule_id="DP003",
+            source_policy="docs/DATA-PRIVACY-POLICY.md#open-sharing-readiness",
+            severity=WarningSeverity.ERROR,
+            passed=structural_status in {"declared_defaced", "no_structural_images"},
+            message=(
+                "Structural images carry explicit defacing metadata."
+                if structural_status == "declared_defaced"
+                else "No structural images were detected; confirm that this matches the intended sharing scope."
+                if structural_status == "no_structural_images"
+                else "Structural images do not carry explicit defacing or face-removal metadata."
+            ),
+        ),
+        PolicyRuleResult(
+            rule_id="MP001",
+            source_policy="docs/METHODS-POLICY.md#core-rule",
+            severity=WarningSeverity.INFO,
+            passed=True,
+            message="This assessment reports technical observations only and does not certify consent, ethics, or sharing permissions.",
+        ),
+    ]
 
-    if not inventory.has_dataset_description:
-        blockers.append("dataset_description.json is required before claiming BIDS or OpenNeuro readiness.")
-    if inventory.dataset_readme_path is None:
-        warnings.append("A dataset README is not present; sharing context may be incomplete.")
-    if structural_status in {"not_documented", "missing_sidecar"}:
-        blockers.append(
-            "Structural images do not carry explicit defacing or face-removal metadata."
-        )
-    if structural_status == "no_structural_images":
-        warnings.append("No structural images were detected; confirm that this matches the intended sharing scope.")
+    blockers = [item.message for item in rule_results if not item.passed and item.severity == WarningSeverity.ERROR]
+    warnings = [
+        item.message
+        for item in rule_results
+        if not item.passed and item.severity in {WarningSeverity.WARNING, WarningSeverity.INFO}
+    ]
 
     summary = ShareabilitySummary(
         policy_profile=config.policy_profile,
@@ -122,6 +184,7 @@ def run_deid_check(config: DeidCheckConfig) -> SkillResult:
         structural_privacy_status=structural_status,
         blockers=blockers,
         warnings=warnings,
+        rule_results=rule_results,
     )
     summary_path = layout.manifests_dir / "shareability-summary.json"
     summary_path.write_text(summary.model_dump_json(indent=2) + "\n", encoding="utf-8")
@@ -143,6 +206,15 @@ def run_deid_check(config: DeidCheckConfig) -> SkillResult:
             message=item,
         )
         for item in warnings
+    )
+    warning_records.extend(
+        WarningRecord(
+            code="shareability-note",
+            severity=WarningSeverity.INFO,
+            message=item.message,
+        )
+        for item in rule_results
+        if item.passed and item.severity == WarningSeverity.INFO
     )
 
     result = SkillResult(

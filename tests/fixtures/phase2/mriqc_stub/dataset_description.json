@@ -1,0 +1,5 @@
+{
+  "Name": "Synthetic MRIQC Derivatives",
+  "BIDSVersion": "1.10.0",
+  "DatasetType": "derivative"
+}

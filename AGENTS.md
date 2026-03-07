@@ -49,6 +49,33 @@ flashy demos at the expense of scientific rigor.
 - `docs/REPRODUCIBILITY-POLICY.md`
 - `prompts/CODEX_MASTER_PROMPT.md`
 
+## Milestone control protocol
+
+Before any substantial implementation, documentation, or contract work, read:
+
+- `docs/status/README.md`
+- `docs/status/CURRENT_STAGE.md`
+- `docs/status/NEXT_MILESTONE.md`
+- `docs/status/BLOCKERS.md`
+- `docs/status/MILESTONE_LOG.md`
+
+`docs/status/NEXT_MILESTONE.md` is the default execution target.
+
+Do not advance to a later milestone unless:
+
+- the current milestone exit criteria are met;
+- the current milestone is blocked and the blocker is recorded in `docs/status/BLOCKERS.md`; or
+- an ADR under `docs/` explicitly justifies resequencing.
+
+After every substantial work cycle, update the relevant status files with concrete repository
+artifacts.
+
+Status claims must cite real files, tests, docs, contracts, commands, ADRs, or unresolved issues.
+Do not use vague progress language.
+
+The status layer governs live milestone sequencing and handoff, but it does not weaken the project
+charter, architecture, scientific-method, privacy, or reproducibility rules.
+
 ## Git handoff rule
 
 When Codex changes tracked repository files, it must commit and push those changes to the GitHub

@@ -1,0 +1,49 @@
+{
+  "artifacts": {
+    "conversion_manifest": "manifests/conversion-manifest.json",
+    "provenance": "provenance/commands.sh",
+    "report": "report/conversion-report.md",
+    "run_manifest": "manifests/run-manifest.json"
+  },
+  "benchmark_id": "phase1_dcm_qa_nih",
+  "clawneuro_version": "0.1.0",
+  "dataset": {
+    "archive_sha256": "585df8757ada1e4121d50daa8114c991983aba63e2568fe5fbc2bfe62ce561c2",
+    "archive_url": "https://codeload.github.com/neurolabusc/dcm_qa_nih/tar.gz/d302d6e241dda747b79ee1724ada3200179755a2",
+    "source_commit": "d302d6e241dda747b79ee1724ada3200179755a2",
+    "source_repo": "neurolabusc/dcm_qa_nih",
+    "workspace_relative_source_root": "sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In"
+  },
+  "generated_at": "2026-03-07T09:29:50.023869+00:00",
+  "notes": [
+    "Copied artifacts preserve workspace-relative paths from the controlled benchmark run.",
+    "The raw public dataset is downloaded at benchmark time and is not vendored into the repository."
+  ],
+  "run": {
+    "status": "succeeded",
+    "summary": "Executed wrapped Dcm2Bids/HeuDiConv planning plus post-conversion validation.",
+    "verification_command": "python benchmarks/run_phase1_public_dicom_to_bids.py --workspace <workspace> --artifact-root benchmarks/artifacts/phase1_dcm_qa_nih",
+    "workspace_relative_output_root": "run-output"
+  },
+  "run_manifest_status": "succeeded",
+  "toolchain": {
+    "python_version": "3.14.3",
+    "runtime_tools": {
+      "bids-validator-deno": {
+        "requested_executable": "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno",
+        "resolved_executable": "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno",
+        "version": "bids-validator 2.4.1"
+      },
+      "dcm2bids": {
+        "requested_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+        "resolved_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+        "version": "dcm2bids version:\t3.2.0"
+      },
+      "dcm2niix": {
+        "requested_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2niix",
+        "resolved_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2niix",
+        "version": "Chris Rorden's dcm2niiX version v1.0.20250505  Clang17.0.0 ARM (64-bit MacOS)"
+      }
+    }
+  }
+}

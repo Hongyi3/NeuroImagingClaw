@@ -77,18 +77,21 @@
     {
       "name": "mriqc_report",
       "phase": "phase-2",
-      "status": "planned",
+      "status": "prototype",
       "kind": "qc",
       "triggers": [
         "run mriqc",
         "qc mri dataset"
       ],
       "inputs": [
-        "bids_root"
+        "bids_root",
+        "participant_filters",
+        "modality_filters"
       ],
       "outputs": [
-        "mriqc_derivatives",
-        "qc_summary",
+        "mriqc_summary",
+        "preserved_reports",
+        "iqm_tables",
         "run_manifest"
       ],
       "chains_to": [
@@ -99,7 +102,7 @@
     {
       "name": "anat_bold_prep",
       "phase": "phase-2",
-      "status": "planned",
+      "status": "prototype",
       "kind": "preprocessing",
       "triggers": [
         "run fmriprep",
@@ -107,11 +110,14 @@
       ],
       "inputs": [
         "bids_root",
-        "prep_config"
+        "prep_config",
+        "participant_filters",
+        "reuse_derivatives"
       ],
       "outputs": [
+        "prep_summary",
         "prep_derivatives",
-        "upstream_reports",
+        "preserved_reports",
         "boilerplate",
         "run_manifest"
       ],

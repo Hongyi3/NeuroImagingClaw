@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 from clawneuro.core import (
     DatasetInventory,
     InputDatasetKind,
@@ -36,3 +34,19 @@ def test_write_provenance_bundle_creates_minimum_files(tmp_path):
     assert (layout.provenance_dir / "analysis_log.md").exists()
     assert (layout.provenance_dir / "checksums.sha256").exists()
     assert provenance.output_checksums
+
+
+def test_write_provenance_bundle_preserves_existing_manifest_notes(tmp_path):
+    layout = ensure_run_layout(tmp_path / "run")
+    manifest = RunManifest(
+        skill=SkillDescriptor(name="test-skill", kind=SkillKind.AUDIT),
+        status=RunStatus.SUCCEEDED,
+        input_state=SkillInputState(root=tmp_path, kind=InputDatasetKind.BIDS, readable=True),
+        dataset_inventory=DatasetInventory(root=tmp_path, dataset_name="fixture"),
+        result_summary="Finished test run.",
+        provenance=ProvenanceRecord(notes=["runtime note"]),
+    )
+
+    provenance = write_provenance_bundle(layout, manifest, notes=["bundle note"])
+
+    assert provenance.notes == ["runtime note", "bundle note"]

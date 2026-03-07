@@ -8,6 +8,8 @@ def test_plan_phase1_for_bids_input(fixtures_root):
     inspection = inspect_dataset(bids_root)
     assert inspection.input_state.kind.value == "bids"
     assert "bids_auditor" in inspection.recommended_skills
+    assert "mriqc_report" in inspection.recommended_skills
+    assert "anat_bold_prep" in inspection.recommended_skills
 
     plan = plan_phase1_workflow(bids_root)
     assert [step.skill_name for step in plan.steps] == ["bids_auditor", "deid_check"]

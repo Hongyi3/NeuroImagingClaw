@@ -80,7 +80,7 @@ def inspect_dataset(path: Path) -> DatasetInspection:
         inventory = inspect_bids_dataset(path)
         recommended_skills.extend(["bids_auditor", "deid_check"])
         if "bold" in inventory.modalities or "anat" in inventory.modalities:
-            recommended_skills.append("anat_bold_prep")
+            recommended_skills.extend(["mriqc_report", "anat_bold_prep"])
         if "dwi" in inventory.modalities:
             recommended_skills.append("diffusion_prep")
         if not inventory.has_dataset_description:
@@ -113,7 +113,7 @@ def inspect_dataset(path: Path) -> DatasetInspection:
     )
 
 
-def plan_phase1_workflow(path: Path, goal: str = "phase1-foundation") -> OrchestrationPlan:
+def plan_phase1_workflow(path: Path, goal: str = "phase1-intake-audit") -> OrchestrationPlan:
     """Create an explicit Phase 1 skill plan for a given input path."""
 
     inspection = inspect_dataset(path)

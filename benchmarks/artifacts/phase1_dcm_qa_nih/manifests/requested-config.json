@@ -1,0 +1,18 @@
+{
+  "auto_extract_entities": true,
+  "backend": "local_binary",
+  "conversion_image": null,
+  "curation_backend": "dcm2bids",
+  "curation_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2bids",
+  "dcm2niix_executable": "/private/tmp/clawneuro-m3-bench/bin/dcm2niix",
+  "execute": true,
+  "heuristic_file": "code/dcm2bids_config.json",
+  "output_root": "run-output",
+  "participant_label": "ID01",
+  "participant_mapping_file": null,
+  "session_label": null,
+  "source_root": "sources/dcm_qa_nih-d302d6e241dda747b79ee1724ada3200179755a2/In",
+  "validator_config": null,
+  "validator_executable": "/private/tmp/clawneuro-m3-bench/bin/bids-validator-deno",
+  "validator_image": null
+}

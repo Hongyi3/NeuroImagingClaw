@@ -124,7 +124,8 @@ def write_provenance_bundle(
     _write_commands_script(commands_path, manifest.provenance.commands)
     environment = capture_environment_snapshot()
     _write_environment_yaml(environment_path, environment)
-    _write_analysis_log(analysis_log_path, manifest, notes or [])
+    combined_notes = [*manifest.provenance.notes, *(notes or [])]
+    _write_analysis_log(analysis_log_path, manifest, combined_notes)
 
     checksum_targets = list(artifact_paths or [])
     checksum_targets.extend([commands_path, environment_path, analysis_log_path])
@@ -140,7 +141,7 @@ def write_provenance_bundle(
         input_checksums=manifest.provenance.input_checksums,
         output_checksums=output_checksums,
         environment=environment,
-        notes=list(notes or []),
+        notes=combined_notes,
     )
 
 

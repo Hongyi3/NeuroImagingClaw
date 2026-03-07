@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional
 
@@ -12,7 +13,10 @@ from clawneuro import __version__
 from clawneuro.core import (
     ArtifactKind,
     ArtifactRecord,
+    BindMount,
     CommandRecord,
+    CONTAINER_CONFIG_ROOT,
+    CONTAINER_INPUT_ROOT,
     ExecutionBackend,
     ExecutionRequest,
     InputDatasetKind,
@@ -48,6 +52,27 @@ class ValidatorIssue(ClawBaseModel):
     location: Optional[str] = None
 
 
+class ValidatorEvidenceMode(str, Enum):
+    """Source mode for validator summaries."""
+
+    PLANNED = "planned"
+    LIVE_EXECUTION = "live_execution"
+    PINNED_FIDELITY_FIXTURE = "pinned_fidelity_fixture"
+
+
+class ValidatorEvidence(ClawBaseModel):
+    """Evidence metadata attached to a validator summary."""
+
+    mode: ValidatorEvidenceMode
+    tool_name: str
+    tool_version: Optional[str] = None
+    output_format: str = "json"
+    source_dataset: Optional[str] = None
+    source_reference: Optional[str] = None
+    fixture_path: Optional[Path] = None
+    notes: List[str] = Field(default_factory=list)
+
+
 class ValidatorSummary(ClawBaseModel):
     """Machine-readable validator summary."""
 
@@ -55,12 +80,23 @@ class ValidatorSummary(ClawBaseModel):
     errors: int = 0
     warnings: int = 0
     issues: List[ValidatorIssue] = Field(default_factory=list)
-    raw_source: str = "planned"
+    schema_version: Optional[str] = None
+    evidence: ValidatorEvidence = Field(
+        default_factory=lambda: ValidatorEvidence(
+            mode=ValidatorEvidenceMode.PLANNED,
+            tool_name="bids-validator",
+        )
+    )
 
 
 def _issue_category(issue: Mapping[str, Any]) -> str:
     code = str(issue.get("code", "")).lower()
-    message = str(issue.get("reason", "") or issue.get("message", "")).lower()
+    message = str(
+        issue.get("reason", "")
+        or issue.get("message", "")
+        or issue.get("issueMessage", "")
+        or issue.get("subCode", "")
+    ).lower()
     if "json" in code or "metadata" in code or "metadata" in message:
         return "metadata"
     if "subject" in code or "structure" in code or "folder" in message:
@@ -68,40 +104,118 @@ def _issue_category(issue: Mapping[str, Any]) -> str:
     return "general"
 
 
-def normalize_validator_output(raw: Mapping[str, Any], status: RunStatus) -> ValidatorSummary:
+def normalize_validator_output(
+    raw: Mapping[str, Any],
+    status: RunStatus,
+    evidence: Optional[ValidatorEvidence] = None,
+) -> ValidatorSummary:
     """Normalize common BIDS validator JSON shapes."""
 
     issues_section = raw.get("issues", {})
-    errors = issues_section.get("errors", []) if isinstance(issues_section, Mapping) else []
-    warnings = issues_section.get("warnings", []) if isinstance(issues_section, Mapping) else []
     normalized_issues: List[ValidatorIssue] = []
-    for raw_issue in list(errors) + list(warnings):
-        if not isinstance(raw_issue, Mapping):
-            continue
-        severity = WarningSeverity.ERROR if raw_issue in errors else WarningSeverity.WARNING
-        normalized_issues.append(
-            ValidatorIssue(
-                code=str(raw_issue.get("code", "validator-issue")),
-                severity=severity,
-                category=_issue_category(raw_issue),
-                message=str(raw_issue.get("reason", "") or raw_issue.get("message", "Validator issue")),
-                location=str(raw_issue.get("location")) if raw_issue.get("location") else None,
+    error_count = 0
+    warning_count = 0
+
+    if isinstance(issues_section, Mapping) and isinstance(issues_section.get("errors"), list):
+        errors = issues_section.get("errors", [])
+        warnings = issues_section.get("warnings", [])
+        for raw_issue in list(errors) + list(warnings):
+            if not isinstance(raw_issue, Mapping):
+                continue
+            severity = WarningSeverity.ERROR if raw_issue in errors else WarningSeverity.WARNING
+            if severity == WarningSeverity.ERROR:
+                error_count += 1
+            else:
+                warning_count += 1
+            normalized_issues.append(
+                ValidatorIssue(
+                    code=str(raw_issue.get("code", "validator-issue")),
+                    severity=severity,
+                    category=_issue_category(raw_issue),
+                    message=str(
+                        raw_issue.get("reason", "")
+                        or raw_issue.get("message", "")
+                        or raw_issue.get("issueMessage", "")
+                        or raw_issue.get("subCode", "")
+                        or "Validator issue"
+                    ),
+                    location=str(raw_issue.get("location")) if raw_issue.get("location") else None,
+                )
             )
-        )
+    elif isinstance(issues_section, Mapping) and isinstance(issues_section.get("issues"), list):
+        for raw_issue in issues_section.get("issues", []):
+            if not isinstance(raw_issue, Mapping):
+                continue
+            severity_name = str(raw_issue.get("severity", "warning")).lower()
+            severity = WarningSeverity.ERROR if severity_name == "error" else WarningSeverity.WARNING
+            if severity == WarningSeverity.ERROR:
+                error_count += 1
+            else:
+                warning_count += 1
+            affects = raw_issue.get("affects")
+            location = raw_issue.get("location")
+            if location is None and isinstance(affects, list) and affects:
+                location = affects[0]
+            normalized_issues.append(
+                ValidatorIssue(
+                    code=str(raw_issue.get("code", "validator-issue")),
+                    severity=severity,
+                    category=_issue_category(raw_issue),
+                    message=str(
+                        raw_issue.get("reason", "")
+                        or raw_issue.get("message", "")
+                        or raw_issue.get("issueMessage", "")
+                        or raw_issue.get("subCode", "")
+                        or raw_issue.get("code", "Validator issue")
+                    ),
+                    location=str(location) if location else None,
+                )
+            )
+
+    schema_version = None
+    summary = raw.get("summary")
+    if isinstance(summary, Mapping):
+        schema_version = str(summary.get("schemaVersion")) if summary.get("schemaVersion") else None
 
     return ValidatorSummary(
         status=status,
-        errors=len(errors),
-        warnings=len(warnings),
+        errors=error_count,
+        warnings=warning_count,
         issues=normalized_issues,
-        raw_source=str(raw.get("source", "validator-json")),
+        schema_version=schema_version,
+        evidence=evidence
+        or ValidatorEvidence(
+            mode=ValidatorEvidenceMode.PLANNED,
+            tool_name="bids-validator",
+        ),
     )
 
 
 def build_validator_request(config: BidsAuditorConfig) -> ExecutionRequest:
     """Create the validator execution request for the chosen backend."""
 
-    args = [str(config.bids_root), "--json"]
+    bids_root = config.bids_root
+    validator_config = config.validator_config
+    bind_mounts: List[BindMount] = []
+
+    if config.backend != ExecutionBackend.LOCAL_BINARY:
+        bind_mounts.append(
+            BindMount(source=config.bids_root, target=CONTAINER_INPUT_ROOT, read_only=True)
+        )
+        bids_root = CONTAINER_INPUT_ROOT
+        if validator_config is not None:
+            bind_mounts.append(
+                BindMount(
+                    source=validator_config.parent,
+                    target=CONTAINER_CONFIG_ROOT,
+                    read_only=True,
+                )
+            )
+            validator_config = CONTAINER_CONFIG_ROOT / validator_config.name
+
+    args = [str(bids_root), "--format", config.validator_format]
+    if validator_config is not None:
+        args.extend(["--config", str(validator_config)])
     if config.participant_labels:
         args.extend(["--participant-label"] + config.participant_labels)
     return ExecutionRequest(
@@ -110,7 +224,9 @@ def build_validator_request(config: BidsAuditorConfig) -> ExecutionRequest:
         executable=config.validator_executable,
         args=args,
         container_image=config.container_image if config.backend != ExecutionBackend.LOCAL_BINARY else None,
+        bind_mounts=bind_mounts,
         description="Validate a BIDS dataset and emit machine-readable JSON.",
+        use_container_entrypoint=config.backend != ExecutionBackend.LOCAL_BINARY,
     )
 
 
@@ -120,8 +236,11 @@ def _render_audit_report(summary: ValidatorSummary, inventory_name: str) -> Repo
             "Validator status: `{0}`".format(summary.status.value),
             "Errors: {0}".format(summary.errors),
             "Warnings: {0}".format(summary.warnings),
+            "Evidence mode: `{0}`".format(summary.evidence.mode.value),
         ]
     )
+    if summary.schema_version:
+        body = body + "\nSchema version: `{0}`".format(summary.schema_version)
     if summary.issues:
         body = body + "\n\nIssue categories: " + ", ".join(
             sorted({issue.category for issue in summary.issues})
@@ -175,6 +294,14 @@ def run_bids_auditor(config: BidsAuditorConfig) -> SkillResult:
     stderr_path = layout.logs_dir / "bids-validator.stderr.log"
     if config.execute:
         command_record = execute_request(validator_request, stdout_path=stdout_path, stderr_path=stderr_path)
+        evidence = ValidatorEvidence(
+            mode=ValidatorEvidenceMode.LIVE_EXECUTION,
+            tool_name=config.validator_executable,
+            output_format=config.validator_format,
+            notes=[
+                "Validator output was captured from an executed command in this run.",
+            ],
+        )
         try:
             raw_validator_output = json.loads(stdout_path.read_text(encoding="utf-8") or "{}")
         except json.JSONDecodeError:
@@ -190,6 +317,12 @@ def run_bids_auditor(config: BidsAuditorConfig) -> SkillResult:
         status = command_record.status
     else:
         command_record = planned_command_record(validator_request)
+        evidence = ValidatorEvidence(
+            mode=ValidatorEvidenceMode.PLANNED,
+            tool_name=config.validator_executable,
+            output_format=config.validator_format,
+            notes=["Validator command was planned but not executed in this run."],
+        )
         raw_validator_output = {"issues": {"errors": [], "warnings": []}, "source": "planned"}
         status = RunStatus.PLANNED
         warnings.append(
@@ -201,7 +334,7 @@ def run_bids_auditor(config: BidsAuditorConfig) -> SkillResult:
             )
         )
 
-    summary = normalize_validator_output(raw_validator_output, status=status)
+    summary = normalize_validator_output(raw_validator_output, status=status, evidence=evidence)
     validator_summary_path = write_model_json(layout.manifests_dir / "validator-summary.json", summary)
     audit_bundle = _render_audit_report(summary, inventory.dataset_name)
     audit_report_path = layout.report_dir / "audit-report.md"
@@ -223,6 +356,8 @@ def run_bids_auditor(config: BidsAuditorConfig) -> SkillResult:
             "Validated BIDS structure and produced a normalized audit summary."
             if status == RunStatus.SUCCEEDED
             else "Planned BIDS validation and emitted a manifest-backed audit scaffold."
+            if status == RunStatus.PLANNED
+            else "Validator execution failed; inspect the captured logs and normalized summary."
         ),
         input_state=input_state,
         dataset_inventory=inventory,

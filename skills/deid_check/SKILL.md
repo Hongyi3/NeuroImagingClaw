@@ -48,6 +48,7 @@ Phase 1
 - structural-image privacy status
 - warnings about unresolved sharing blockers
 - machine-readable shareability summary
+- rule results that cite the governing privacy and methods policies
 
 ## Non-goals
 
@@ -68,3 +69,15 @@ This skill must emit at least:
 - checksums of primary inputs;
 - a machine-readable run manifest;
 - pointers to any derivative dataset descriptions it creates or updates.
+
+## Failure modes
+
+- unreadable or non-BIDS dataset root;
+- missing anatomical sidecars for detected structural images;
+- structural images without explicit defacing or face-removal metadata.
+
+## Fidelity limitations
+
+- this skill reports technical sharing readiness only;
+- it does not certify consent, ethics approvals, or data-use permissions;
+- conservative rule failures are preferred over permissive guesses.

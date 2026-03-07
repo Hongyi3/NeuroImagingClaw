@@ -39,17 +39,27 @@ Phase 2
 
 ## Input contract
 
-- valid BIDS dataset with T1w and optional BOLD runs
-- preprocessing configuration
-- participant selection
-- hard fail if required metadata or mandatory modalities are missing
+- valid BIDS dataset with anatomical input and optional BOLD runs
+- participant selection plus optional output-space and reuse-derivative configuration
+- optional local binary or pinned Docker/Apptainer image selection
+- optional FreeSurfer license path when FreeSurfer-backed processing is enabled
+- hard fail if anatomy is missing, if BOLD is missing for non-`anat_only` runs, or if a pinned runtime/license contract is violated
 
 ## Output contract
 
-- preprocessed BIDS derivatives
-- upstream visual reports
-- collected boilerplate and versions
-- normalized ClawNeuro run manifest
+- `manifests/anat-bold-prep-summary.json`
+- `report/anat-bold-prep-report.md`
+- preserved upstream derivative root under `derivatives/`
+- preserved subject HTML reports, confounds outputs, and citation boilerplate surfaced as manifest artifacts
+- canonical `run-manifest.json` plus reproducibility bundle
+
+## Failure modes
+
+- non-BIDS inputs and anatomy-free datasets hard fail
+- non-`anat_only` runs without BOLD hard fail
+- unpinned container images and FreeSurfer-without-license requests hard fail at config validation
+- executed runs become `partial` when preserved reports, boilerplate, or derivative metadata are missing after command success
+- tracking suppression is enabled by default; disabling it is surfaced as a warning
 
 ## Non-goals
 
@@ -66,8 +76,8 @@ Downstream: `task_glm`, `rest_connectivity`, `report_bundle`
 
 This skill must emit at least:
 
-- exact command lines;
-- tool versions;
-- checksums of primary inputs;
+- exact preprocessing command lines;
+- tool version or pinned container image reference;
+- checksums of emitted wrapper artifacts;
 - a machine-readable run manifest;
-- pointers to any derivative dataset descriptions it creates or updates.
+- pointers to preserved reports, boilerplate files, confounds outputs, and derivative metadata.
