@@ -178,9 +178,20 @@ jobs:
           PY
 
       - name: Verify repository after benchmark execution
+        id: repo_verify
+        continue-on-error: true
         run: |
-          python -m pytest
-          ruff check src tests benchmarks
+          set +e
+          python -m pytest 2>&1 | tee /tmp/repo-verify.log
+          pytest_status=${PIPESTATUS[0]}
+          ruff check src tests benchmarks 2>&1 | tee -a /tmp/repo-verify.log
+          ruff_status=${PIPESTATUS[0]}
+          set -e
+          printf '%s\n' "$pytest_status" > /tmp/repo-verify-pytest-status.txt
+          printf '%s\n' "$ruff_status" > /tmp/repo-verify-ruff-status.txt
+          if [ "$pytest_status" -ne 0 ] || [ "$ruff_status" -ne 0 ]; then
+            exit 1
+          fi
 
       - name: Upload benchmark artifacts
         if: always()
@@ -192,6 +203,23 @@ jobs:
             benchmarks/artifacts/phase2_ds003020_anat_bold_prep
             /tmp/clawneuro-m5-work
             /tmp/clawneuro-phase2-ds003020
+
+      - name: Commit generated live benchmark artifacts
+        if: always()
+        run: |
+          if [ ! -d benchmarks/artifacts/phase2_ds003020_mriqc ] || [ ! -d benchmarks/artifacts/phase2_ds003020_anat_bold_prep ]; then
+            echo "Phase 2 benchmark artifacts are incomplete; nothing to commit."
+            exit 0
+          fi
+          if [ -z "$(git status --short -- benchmarks/artifacts/phase2_ds003020_mriqc benchmarks/artifacts/phase2_ds003020_anat_bold_prep)" ]; then
+            echo "No benchmark artifact changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add benchmarks/artifacts/phase2_ds003020_mriqc benchmarks/artifacts/phase2_ds003020_anat_bold_prep
+          git commit -m "benchmarks: add phase2 ds003020 live artifacts"
+          git push origin HEAD:${GITHUB_REF_NAME}
 
       - name: Persist benchmark failure logs
         if: failure()
@@ -214,6 +242,9 @@ jobs:
               Path("/tmp/prep-step.log"),
               Path("/tmp/mriqc-step-status.txt"),
               Path("/tmp/prep-step-status.txt"),
+              Path("/tmp/repo-verify.log"),
+              Path("/tmp/repo-verify-pytest-status.txt"),
+              Path("/tmp/repo-verify-ruff-status.txt"),
           ):
               if step_artifact.exists():
                   destination = debug_root / step_artifact.name
@@ -263,15 +294,11 @@ jobs:
           git commit -m "ci: capture phase2 benchmark failure logs"
           git push origin HEAD:${GITHUB_REF_NAME}
 
-      - name: Commit generated live benchmark artifacts
-        if: success()
+      - name: Fail on repository verification error
+        if: steps.repo_verify.outcome == 'failure'
         run: |
-          if [ -z "$(git status --short -- benchmarks/artifacts/phase2_ds003020_mriqc benchmarks/artifacts/phase2_ds003020_anat_bold_prep)" ]; then
-            echo "No benchmark artifact changes to commit."
-            exit 0
+          echo "Repository verification failed after benchmark execution."
+          if [ -f /tmp/repo-verify.log ]; then
+            tail -n 120 /tmp/repo-verify.log
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add benchmarks/artifacts/phase2_ds003020_mriqc benchmarks/artifacts/phase2_ds003020_anat_bold_prep
-          git commit -m "benchmarks: add phase2 ds003020 live artifacts"
-          git push origin HEAD:${GITHUB_REF_NAME}
+          exit 1
