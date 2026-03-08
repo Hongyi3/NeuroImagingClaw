@@ -93,26 +93,42 @@ jobs:
             --workspace /tmp/clawneuro-m5-work/mriqc \
             --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc \
             --backend docker 2>&1 | tee /tmp/mriqc-step.log
-          command_status=${PIPESTATUS[0]}
+          command_status=$?
           set -e
           printf '%s\n' "$command_status" > /tmp/mriqc-step-status.txt
 
       - name: Check MRIQC Phase 2 benchmark result
         run: |
-          command_status=$(cat /tmp/mriqc-step-status.txt)
-          if [ "$command_status" -ne 0 ]; then
-            python - <<'PY'
-            from pathlib import Path
+          command_status=$(tr -d '[:space:]' < /tmp/mriqc-step-status.txt 2>/dev/null || true)
+          case "$command_status" in
+            0)
+              ;;
+            '')
+              echo "::error title=MRIQC benchmark gate failed::Empty MRIQC status marker."
+              echo "MRIQC status file contents:"
+              cat /tmp/mriqc-step-status.txt || true
+              exit 97
+              ;;
+            *[!0-9]*)
+              echo "::error title=MRIQC benchmark gate failed::Invalid MRIQC status marker: $command_status"
+              echo "MRIQC status file contents:"
+              cat /tmp/mriqc-step-status.txt || true
+              exit 97
+              ;;
+            *)
+              python - <<'PY'
+              from pathlib import Path
 
-            text = Path("/tmp/mriqc-step.log").read_text(encoding="utf-8", errors="replace")
-            message = "\n".join(text.splitlines()[-80:])
-            message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
-            print(f"::error title=MRIQC benchmark failed::{message}")
-            PY
-            echo "MRIQC benchmark workspace contents:"
-            find /tmp/clawneuro-m5-work/mriqc -maxdepth 4 -type f | sort || true
-            exit "$command_status"
-          fi
+              text = Path("/tmp/mriqc-step.log").read_text(encoding="utf-8", errors="replace")
+              message = "\n".join(text.splitlines()[-80:])
+              message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+              print(f"::error title=MRIQC benchmark failed::{message}")
+              PY
+              echo "MRIQC benchmark workspace contents:"
+              find /tmp/clawneuro-m5-work/mriqc -maxdepth 4 -type f | sort || true
+              exit "$command_status"
+              ;;
+          esac
 
       - name: Run anat/BOLD preprocessing Phase 2 benchmark command
         run: |
@@ -122,26 +138,42 @@ jobs:
             --workspace /tmp/clawneuro-m5-work/prep \
             --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep \
             --backend docker 2>&1 | tee /tmp/prep-step.log
-          command_status=${PIPESTATUS[0]}
+          command_status=$?
           set -e
           printf '%s\n' "$command_status" > /tmp/prep-step-status.txt
 
       - name: Check anat/BOLD preprocessing Phase 2 benchmark result
         run: |
-          command_status=$(cat /tmp/prep-step-status.txt)
-          if [ "$command_status" -ne 0 ]; then
-            python - <<'PY'
-            from pathlib import Path
+          command_status=$(tr -d '[:space:]' < /tmp/prep-step-status.txt 2>/dev/null || true)
+          case "$command_status" in
+            0)
+              ;;
+            '')
+              echo "::error title=Preprocessing benchmark gate failed::Empty preprocessing status marker."
+              echo "Preprocessing status file contents:"
+              cat /tmp/prep-step-status.txt || true
+              exit 97
+              ;;
+            *[!0-9]*)
+              echo "::error title=Preprocessing benchmark gate failed::Invalid preprocessing status marker: $command_status"
+              echo "Preprocessing status file contents:"
+              cat /tmp/prep-step-status.txt || true
+              exit 97
+              ;;
+            *)
+              python - <<'PY'
+              from pathlib import Path
 
-            text = Path("/tmp/prep-step.log").read_text(encoding="utf-8", errors="replace")
-            message = "\n".join(text.splitlines()[-80:])
-            message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
-            print(f"::error title=Preprocessing benchmark failed::{message}")
-            PY
-            echo "Preprocessing benchmark workspace contents:"
-            find /tmp/clawneuro-m5-work/prep -maxdepth 4 -type f | sort || true
-            exit "$command_status"
-          fi
+              text = Path("/tmp/prep-step.log").read_text(encoding="utf-8", errors="replace")
+              message = "\n".join(text.splitlines()[-80:])
+              message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+              print(f"::error title=Preprocessing benchmark failed::{message}")
+              PY
+              echo "Preprocessing benchmark workspace contents:"
+              find /tmp/clawneuro-m5-work/prep -maxdepth 4 -type f | sort || true
+              exit "$command_status"
+              ;;
+          esac
 
       - name: Verify repository after benchmark execution
         run: |
@@ -175,11 +207,16 @@ jobs:
               shutil.rmtree(debug_root)
           debug_root.mkdir(parents=True, exist_ok=True)
 
-          for step_log in (Path("/tmp/mriqc-step.log"), Path("/tmp/prep-step.log")):
-              if step_log.exists():
-                  destination = debug_root / step_log.name
+          for step_artifact in (
+              Path("/tmp/mriqc-step.log"),
+              Path("/tmp/prep-step.log"),
+              Path("/tmp/mriqc-step-status.txt"),
+              Path("/tmp/prep-step-status.txt"),
+          ):
+              if step_artifact.exists():
+                  destination = debug_root / step_artifact.name
                   destination.parent.mkdir(parents=True, exist_ok=True)
-                  shutil.copy2(step_log, destination)
+                  shutil.copy2(step_artifact, destination)
 
           workspace_root = Path("/tmp/clawneuro-m5-work")
           workspace_debug_root = debug_root / "workspace"
