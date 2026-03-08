@@ -86,12 +86,14 @@ jobs:
 
       - name: Run MRIQC Phase 2 benchmark
         run: |
+          set +e
           python benchmarks/run_phase2_public_mriqc.py \
             --dataset-root /tmp/clawneuro-phase2-ds003020 \
             --workspace /tmp/clawneuro-m5-work/mriqc \
             --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc \
             --backend docker 2>&1 | tee /tmp/mriqc-step.log
           status=${PIPESTATUS[0]}
+          set -e
           if [ "$status" -ne 0 ]; then
             python - <<'PY'
             from pathlib import Path
@@ -108,12 +110,14 @@ jobs:
 
       - name: Run anat/BOLD preprocessing Phase 2 benchmark
         run: |
+          set +e
           python benchmarks/run_phase2_public_anat_bold_prep.py \
             --dataset-root /tmp/clawneuro-phase2-ds003020 \
             --workspace /tmp/clawneuro-m5-work/prep \
             --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep \
             --backend docker 2>&1 | tee /tmp/prep-step.log
           status=${PIPESTATUS[0]}
+          set -e
           if [ "$status" -ne 0 ]; then
             python - <<'PY'
             from pathlib import Path
