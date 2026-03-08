@@ -54,6 +54,17 @@ MRIQC_MODALITY_TO_CLI = {
 }
 
 
+def _format_mriqc_mem_gb(mem_gb: float) -> str:
+    """Render MRIQC memory arguments using the integer-plus-unit grammar its parser expects."""
+
+    if mem_gb.is_integer():
+        return str(int(mem_gb))
+    mem_mb = int(round(mem_gb * 1000))
+    if mem_mb < 1:
+        raise ValueError("MRIQC memory requests must be at least 1 MB.")
+    return f"{mem_mb}M"
+
+
 class MRIQCRunSummary(ClawBaseModel):
     """Machine-readable summary of planned or executed MRIQC behavior."""
 
@@ -144,7 +155,7 @@ def _mriqc_common_args(
     if config.omp_nthreads is not None:
         args.extend(["--omp-nthreads", str(config.omp_nthreads)])
     if config.mem_gb is not None:
-        args.extend(["--mem_gb", str(config.mem_gb)])
+        args.extend(["--mem_gb", _format_mriqc_mem_gb(config.mem_gb)])
     args.extend(["-w", str(work_dir)])
     if config.no_sub:
         args.append("--no-sub")

@@ -67,6 +67,41 @@ def test_mriqc_report_container_request_uses_stable_paths(tmp_path, fixtures_roo
     }
 
 
+def test_mriqc_report_formats_memory_without_decimal_cli_values(tmp_path, fixtures_root):
+    integer_request = build_mriqc_participant_request(
+        MRIQCReportConfig(
+            bids_root=fixtures_root / "bids" / "anat_bold",
+            output_root=tmp_path / "mriqc-int",
+            backend=ExecutionBackend.DOCKER,
+            container_image="nipreps/mriqc:24.0.0",
+            participant_labels=["01"],
+            modalities=["anat", "bold"],
+            mem_gb=12,
+        ),
+        inventory=inspect_bids_dataset(fixtures_root / "bids" / "anat_bold"),
+        derivative_root=tmp_path / "mriqc-int" / "derivatives",
+    )
+    fractional_request = build_mriqc_participant_request(
+        MRIQCReportConfig(
+            bids_root=fixtures_root / "bids" / "anat_bold",
+            output_root=tmp_path / "mriqc-fractional",
+            backend=ExecutionBackend.DOCKER,
+            container_image="nipreps/mriqc:24.0.0",
+            participant_labels=["01"],
+            modalities=["anat", "bold"],
+            mem_gb=1.5,
+        ),
+        inventory=inspect_bids_dataset(fixtures_root / "bids" / "anat_bold"),
+        derivative_root=tmp_path / "mriqc-fractional" / "derivatives",
+    )
+
+    integer_index = integer_request.args.index("--mem_gb")
+    fractional_index = fractional_request.args.index("--mem_gb")
+
+    assert integer_request.args[integer_index + 1] == "12"
+    assert fractional_request.args[fractional_index + 1] == "1500M"
+
+
 def test_mriqc_report_execute_harvests_reports_and_iqms(tmp_path, fixtures_root, monkeypatch):
     derivative_stub = fixtures_root / "phase2" / "mriqc_stub"
 
