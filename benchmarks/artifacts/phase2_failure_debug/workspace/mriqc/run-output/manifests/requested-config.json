@@ -1,0 +1,25 @@
+{
+  "backend": "docker",
+  "bids_root": "/tmp/clawneuro-phase2-ds003020",
+  "container_image": "nipreps/mriqc:24.0.0",
+  "execute": true,
+  "mem_gb": 12.0,
+  "modalities": [
+    "anat",
+    "bold"
+  ],
+  "mriqc_executable": "mriqc",
+  "no_sub": true,
+  "nprocs": 2,
+  "omp_nthreads": 2,
+  "output_root": "/tmp/clawneuro-m5-work/mriqc/run-output",
+  "participant_labels": [
+    "UTS01"
+  ],
+  "run_group": true,
+  "session_ids": [
+    "1"
+  ],
+  "task_ids": [],
+  "work_dir": null
+}

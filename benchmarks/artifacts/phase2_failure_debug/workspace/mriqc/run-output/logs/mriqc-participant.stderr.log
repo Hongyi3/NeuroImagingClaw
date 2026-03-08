@@ -1,0 +1,88 @@
+Traceback (most recent call last):
+  File "/opt/conda/lib/python3.11/site-packages/mriqc/engine/plugin.py", line 579, in _send_procs_to_workers
+    self.procs[jobid].run(updatehash=updatehash)
+  File "/opt/conda/lib/python3.11/site-packages/nipype/pipeline/engine/nodes.py", line 527, in run
+    result = self._run_interface(execute=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/site-packages/nipype/pipeline/engine/nodes.py", line 645, in _run_interface
+    return self._run_command(execute)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/site-packages/nipype/pipeline/engine/nodes.py", line 771, in _run_command
+    raise NodeExecutionError(msg)
+nipype.pipeline.engine.nodes.NodeExecutionError: Exception raised while executing Node datasink.
+
+Traceback:
+	Traceback (most recent call last):
+	  File "/opt/conda/lib/python3.11/site-packages/nipype/interfaces/base/core.py", line 397, in run
+	    runtime = self._run_interface(runtime)
+	              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	  File "/opt/conda/lib/python3.11/site-packages/mriqc/interfaces/bids.py", line 188, in _run_interface
+	    json.dumps(
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/__init__.py", line 395, in dumps
+	    **kw).encode(obj)
+	          ^^^^^^^^^^^
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/encoder.py", line 300, in encode
+	    chunks = list(chunks)
+	             ^^^^^^^^^^^^
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/encoder.py", line 714, in _iterencode
+	    for chunk in _iterencode_dict(o, _current_indent_level):
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/encoder.py", line 645, in _iterencode_dict
+	    yield _floatstr(value)
+	          ^^^^^^^^^^^^^^^^
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/encoder.py", line 351, in floatstr
+	    raise ValueError(
+	ValueError: Out of range float values are not JSON compliant: nan
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/conda/bin/mriqc", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/conda/lib/python3.11/site-packages/mriqc/cli/run.py", line 178, in main
+    mriqc_wf.run(**_plugin)
+  File "/opt/conda/lib/python3.11/site-packages/nipype/pipeline/engine/workflows.py", line 638, in run
+    runner.run(execgraph, updatehash=updatehash, config=self.config)
+  File "/opt/conda/lib/python3.11/site-packages/mriqc/engine/plugin.py", line 214, in run
+    self._send_procs_to_workers(updatehash=updatehash, graph=graph)
+  File "/opt/conda/lib/python3.11/site-packages/mriqc/engine/plugin.py", line 582, in _send_procs_to_workers
+    self._clean_queue(
+  File "/opt/conda/lib/python3.11/site-packages/mriqc/engine/plugin.py", line 259, in _clean_queue
+    raise RuntimeError(''.join(result['traceback']))
+RuntimeError: Traceback (most recent call last):
+  File "/opt/conda/lib/python3.11/site-packages/mriqc/engine/plugin.py", line 579, in _send_procs_to_workers
+    self.procs[jobid].run(updatehash=updatehash)
+  File "/opt/conda/lib/python3.11/site-packages/nipype/pipeline/engine/nodes.py", line 527, in run
+    result = self._run_interface(execute=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/site-packages/nipype/pipeline/engine/nodes.py", line 645, in _run_interface
+    return self._run_command(execute)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/site-packages/nipype/pipeline/engine/nodes.py", line 771, in _run_command
+    raise NodeExecutionError(msg)
+nipype.pipeline.engine.nodes.NodeExecutionError: Exception raised while executing Node datasink.
+
+Traceback:
+	Traceback (most recent call last):
+	  File "/opt/conda/lib/python3.11/site-packages/nipype/interfaces/base/core.py", line 397, in run
+	    runtime = self._run_interface(runtime)
+	              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	  File "/opt/conda/lib/python3.11/site-packages/mriqc/interfaces/bids.py", line 188, in _run_interface
+	    json.dumps(
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/__init__.py", line 395, in dumps
+	    **kw).encode(obj)
+	          ^^^^^^^^^^^
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/encoder.py", line 300, in encode
+	    chunks = list(chunks)
+	             ^^^^^^^^^^^^
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/encoder.py", line 714, in _iterencode
+	    for chunk in _iterencode_dict(o, _current_indent_level):
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/encoder.py", line 645, in _iterencode_dict
+	    yield _floatstr(value)
+	          ^^^^^^^^^^^^^^^^
+	  File "/opt/conda/lib/python3.11/site-packages/simplejson/encoder.py", line 351, in floatstr
+	    raise ValueError(
+	ValueError: Out of range float values are not JSON compliant: nan
+
+
