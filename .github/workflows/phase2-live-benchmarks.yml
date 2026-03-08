@@ -10,6 +10,7 @@ on:
       - "benchmarks/**"
       - "!benchmarks/artifacts/phase2_ds003020_mriqc/**"
       - "!benchmarks/artifacts/phase2_ds003020_anat_bold_prep/**"
+      - "!benchmarks/artifacts/phase2_failure_debug/**"
       - "src/**"
       - "tests/**"
       - "docs/**"
@@ -148,10 +149,75 @@ jobs:
             /tmp/clawneuro-m5-work
             /tmp/clawneuro-phase2-ds003020
 
+      - name: Persist benchmark failure logs
+        if: failure()
+        env:
+          DEBUG_ROOT: benchmarks/artifacts/phase2_failure_debug
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import shutil
+          from pathlib import Path
+
+          debug_root = Path(os.environ["DEBUG_ROOT"])
+          if debug_root.exists():
+              shutil.rmtree(debug_root)
+          debug_root.mkdir(parents=True, exist_ok=True)
+
+          for step_log in (Path("/tmp/mriqc-step.log"), Path("/tmp/prep-step.log")):
+              if step_log.exists():
+                  destination = debug_root / step_log.name
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copy2(step_log, destination)
+
+          workspace_root = Path("/tmp/clawneuro-m5-work")
+          workspace_debug_root = debug_root / "workspace"
+          if workspace_root.exists():
+              for path in workspace_root.rglob("*"):
+                  if not path.is_file():
+                      continue
+                  if path.suffix not in {".json", ".log", ".md", ".txt", ".html"}:
+                      continue
+                  destination = workspace_debug_root / path.relative_to(workspace_root)
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copy2(path, destination)
+
+          dataset_root = Path("/tmp/clawneuro-phase2-ds003020")
+          if dataset_root.exists():
+              for relative in (Path("dataset_description.json"), Path("participants.tsv")):
+                  source = dataset_root / relative
+                  if source.exists():
+                      destination = debug_root / "dataset" / relative
+                      destination.parent.mkdir(parents=True, exist_ok=True)
+                      shutil.copy2(source, destination)
+
+          metadata = {
+              "run_id": os.environ.get("GITHUB_RUN_ID"),
+              "attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+              "sha": os.environ.get("GITHUB_SHA"),
+              "ref_name": os.environ.get("GITHUB_REF_NAME"),
+          }
+          (debug_root / "failure-metadata.json").write_text(
+              json.dumps(metadata, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+          if [ -z "$(git status --short -- "$DEBUG_ROOT")" ]; then
+            echo "No benchmark failure logs to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DEBUG_ROOT"
+          git commit -m "ci: capture phase2 benchmark failure logs"
+          git push origin HEAD:${GITHUB_REF_NAME}
+
       - name: Commit generated live benchmark artifacts
         if: success()
         run: |
-          if git diff --quiet -- benchmarks/artifacts/phase2_ds003020_mriqc benchmarks/artifacts/phase2_ds003020_anat_bold_prep; then
+          if [ -z "$(git status --short -- benchmarks/artifacts/phase2_ds003020_mriqc benchmarks/artifacts/phase2_ds003020_anat_bold_prep)" ]; then
             echo "No benchmark artifact changes to commit."
             exit 0
           fi
