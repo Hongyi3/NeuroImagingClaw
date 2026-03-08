@@ -50,6 +50,34 @@
       "path": "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives"
     },
     {
+      "description": "Derivative dataset description emitted by the wrapped tool.",
+      "generated_by": "mriqc_report",
+      "kind": "metadata",
+      "media_type": "application/json",
+      "path": "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives/dataset_description.json"
+    },
+    {
+      "description": "Preserved upstream HTML report.",
+      "generated_by": "mriqc_report",
+      "kind": "report",
+      "media_type": "text/html",
+      "path": "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives/group_bold.html"
+    },
+    {
+      "description": "Preserved upstream HTML report.",
+      "generated_by": "mriqc_report",
+      "kind": "report",
+      "media_type": "text/html",
+      "path": "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.html"
+    },
+    {
+      "description": "Preserved upstream IQM summary table.",
+      "generated_by": "mriqc_report",
+      "kind": "table",
+      "media_type": "text/tab-separated-values",
+      "path": "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives/group_bold.tsv"
+    },
+    {
       "description": "Preserved upstream IQM summary table.",
       "generated_by": "mriqc_report",
       "kind": "table",
@@ -105,7 +133,7 @@
     "resting-state"
   ],
   "clawneuro_version": "0.1.0",
-  "created_at": "2026-03-08T18:03:27.701239Z",
+  "created_at": "2026-03-08T18:16:31.972888Z",
   "dataset_inventory": {
     "dataset_description_path": "/tmp/clawneuro-phase2-ds003020/dataset_description.json",
     "dataset_name": "An fMRI dataset during a passive natural language listening task",
@@ -170,8 +198,6 @@
           "--session-id",
           "1",
           "-m",
-          "T1w",
-          "T2w",
           "bold",
           "--nprocs",
           "2",
@@ -184,14 +210,14 @@
           "--no-sub"
         ],
         "backend": "docker",
-        "duration_seconds": 674.87383251,
+        "duration_seconds": 355.693531771,
         "environment": {},
-        "exit_code": 1,
-        "finished_at": "2026-03-08T18:03:27.694702Z",
+        "exit_code": 0,
+        "finished_at": "2026-03-08T18:16:30.266842Z",
         "name": "mriqc-participant",
-        "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/mriqc/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/mriqc/run-output/work:/clawneuro/work:rw nipreps/mriqc:24.0.0 /clawneuro/input /clawneuro/output participant --participant-label UTS01 --session-id 1 -m T1w T2w bold --nprocs 2 --omp-nthreads 2 --mem_gb 12 -w /clawneuro/work --no-sub",
-        "started_at": "2026-03-08T17:52:12.820867Z",
-        "status": "failed",
+        "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/mriqc/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/mriqc/run-output/work:/clawneuro/work:rw nipreps/mriqc:24.0.0 /clawneuro/input /clawneuro/output participant --participant-label UTS01 --session-id 1 -m bold --nprocs 2 --omp-nthreads 2 --mem_gb 12 -w /clawneuro/work --no-sub",
+        "started_at": "2026-03-08T18:10:34.573307Z",
+        "status": "succeeded",
         "stderr_path": "/tmp/clawneuro-m5-work/mriqc/run-output/logs/mriqc-participant.stderr.log",
         "stdout_path": "/tmp/clawneuro-m5-work/mriqc/run-output/logs/mriqc-participant.stdout.log",
         "working_directory": null
@@ -214,8 +240,6 @@
           "--session-id",
           "1",
           "-m",
-          "T1w",
-          "T2w",
           "bold",
           "--nprocs",
           "2",
@@ -228,16 +252,16 @@
           "--no-sub"
         ],
         "backend": "docker",
-        "duration_seconds": null,
+        "duration_seconds": 1.6690090219999547,
         "environment": {},
-        "exit_code": null,
-        "finished_at": null,
+        "exit_code": 0,
+        "finished_at": "2026-03-08T18:16:31.936467Z",
         "name": "mriqc-group",
-        "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/mriqc/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/mriqc/run-output/work:/clawneuro/work:rw nipreps/mriqc:24.0.0 /clawneuro/input /clawneuro/output group --session-id 1 -m T1w T2w bold --nprocs 2 --omp-nthreads 2 --mem_gb 12 -w /clawneuro/work --no-sub",
-        "started_at": null,
-        "status": "skipped",
-        "stderr_path": null,
-        "stdout_path": null,
+        "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/mriqc/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/mriqc/run-output/work:/clawneuro/work:rw nipreps/mriqc:24.0.0 /clawneuro/input /clawneuro/output group --session-id 1 -m bold --nprocs 2 --omp-nthreads 2 --mem_gb 12 -w /clawneuro/work --no-sub",
+        "started_at": "2026-03-08T18:16:30.267461Z",
+        "status": "succeeded",
+        "stderr_path": "/tmp/clawneuro-m5-work/mriqc/run-output/logs/mriqc-group.stderr.log",
+        "stdout_path": "/tmp/clawneuro-m5-work/mriqc/run-output/logs/mriqc-group.stdout.log",
         "working_directory": null
       }
     ],
@@ -256,16 +280,22 @@
       "MRIQC requests keep participant and optional group runs explicit rather than depending on implicit upstream behavior."
     ],
     "output_checksums": {
+      "derivatives/dataset_description.json": "61fdc6f7de68ab378b4c2428e4b108bb1ca339e95ea3df784f0e9c86d5af8d17",
+      "derivatives/group_bold.html": "7c1d3850bfb53dfd12ec3a2e1cc2f478b6c8434b94db914d387bd50e2ece9f2f",
+      "derivatives/group_bold.tsv": "d654803dc6b18ae2575f3cdf791a1f3a90597579db5a9ac07ce982e6a51bd9aa",
       "derivatives/sub-UTS01/ses-1/func/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_timeseries.tsv": "95f76ce45d604441911f1f2f40c766f7b3f15829a8afab5f78b184712d584fa9",
-      "logs/mriqc-participant.stderr.log": "3b52b09c0448a9adf42a09f45faaa870b961d79d3193a3419545851473087a07",
-      "logs/mriqc-participant.stdout.log": "23673cb476d2a0533432ace5939a9ccc578aa1bd5f75f05a234b7839d89a778c",
-      "manifests/mriqc-summary.json": "62a6a18dda17c486277eb44e9397c3c64d02fb2bb0536b6a5e713a49d5299669",
-      "manifests/requested-config.json": "f0308812f8f34b83fa02ce1824c30dfabbbff67531add60d7420b293bc2b1409",
-      "manifests/run-manifest.json": "c8c9def866cc329779bdffc944d4d4cb5a18ef409c606c02d4bfcb53c4b36030",
-      "provenance/analysis_log.md": "b0eb0628562b1b97f699080b336f16cce5ecbb6792391bd9980e663e98fef60d",
-      "provenance/commands.sh": "543248d9d17e1411fe21f7daec5e2191660215684a873533a99f4c3033810037",
+      "derivatives/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.html": "24d637e358c23a79ce711c1ac36801e1753e71d1a816f690fee12cbbb807e4a6",
+      "logs/mriqc-group.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logs/mriqc-group.stdout.log": "ea69611aa69287196319d7e950df933a3cac8f19572016366c20f0464b326db5",
+      "logs/mriqc-participant.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logs/mriqc-participant.stdout.log": "97e13d0f2f8c5acc20b3feb08cd57ccb1c0227abd0cfea7a5d74b9e32bb405f0",
+      "manifests/mriqc-summary.json": "d6eb2fa5d6e31dfc9d8a7497fafc0d6608a621e2a9ea89644701bb38408cffb1",
+      "manifests/requested-config.json": "7a8866d7c15ce94d1588cf0c84c6c140ba472ed4a9aff11d80124238ebf1d204",
+      "manifests/run-manifest.json": "006bc861b01b73b2bcb18bf6ba722026ac831cac91849ea5ed4aa4b732d138e2",
+      "provenance/analysis_log.md": "7d2b6604cc1624951207d52efafe5a655a90a717c6f5a16c7f0485e7441e0f1c",
+      "provenance/commands.sh": "1e435a3f1b0385df199c2e93afbbba80c742ca1c5e13de1435b68b627ff79545",
       "provenance/environment.yml": "0859f0ffecc60ede91e7ad1b57f38046ddb91a9cb75914d33d029ffe9722556e",
-      "report/mriqc-report.md": "c7c0502538e81a7c4ce8076fca1dd74bcb1f573886120b7605bb3af26796d90c"
+      "report/mriqc-report.md": "b066bbe5e2edfc9ad9aa5d85345347ddc83d0c25fbe498c94119617cb7e602cc"
     },
     "software": [
       {
@@ -278,11 +308,19 @@
       },
       {
         "container_digest": null,
+        "container_image": null,
+        "name": "docker",
+        "role": "container-runtime",
+        "source": "/usr/bin/docker",
+        "version": "Docker version 28.0.4, build b8034c0"
+      },
+      {
+        "container_digest": "nipreps/mriqc@sha256:00d19fa62a4fcea958b11dbce2f5907cbbf9dde488d57380d13143da5fffc792",
         "container_image": "nipreps/mriqc:24.0.0",
         "name": "mriqc",
         "role": "qc",
         "source": null,
-        "version": null
+        "version": "24.0.0"
       }
     ]
   },
@@ -293,7 +331,6 @@
     "execute": true,
     "mem_gb": 12.0,
     "modalities": [
-      "anat",
       "bold"
     ],
     "mriqc_executable": "mriqc",
@@ -311,7 +348,7 @@
     "task_ids": [],
     "work_dir": null
   },
-  "result_summary": "MRIQC execution failed; inspect the captured command logs.",
+  "result_summary": "MRIQC completed and preserved HTML reports, IQM tables, and derivative metadata.",
   "schema_version": "0.1.0",
   "skill": {
     "contract_path": "skills/mriqc_report/SKILL.md",
@@ -319,13 +356,6 @@
     "name": "mriqc_report",
     "version": "0.1.0"
   },
-  "status": "failed",
-  "warnings": [
-    {
-      "code": "mriqc-execution-failed",
-      "hint": "Inspect the participant/group stdout and stderr logs.",
-      "message": "MRIQC execution failed before the expected QC artifacts were harvested.",
-      "severity": "error"
-    }
-  ]
+  "status": "succeeded",
+  "warnings": []
 }

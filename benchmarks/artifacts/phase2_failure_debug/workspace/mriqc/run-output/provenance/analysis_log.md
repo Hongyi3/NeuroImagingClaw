@@ -4,10 +4,10 @@
 mriqc_report
 
 ## Summary
-MRIQC execution failed; inspect the captured command logs.
+MRIQC completed and preserved HTML reports, IQM tables, and derivative metadata.
 
 ## Warnings
-- [error] MRIQC execution failed before the expected QC artifacts were harvested.
+- none
 
 ## Notes
 - MRIQC participant and optional group runs are recorded as separate commands to keep artifact provenance explicit.

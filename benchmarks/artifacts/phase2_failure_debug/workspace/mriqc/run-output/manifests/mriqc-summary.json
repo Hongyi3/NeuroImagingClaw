@@ -1,5 +1,5 @@
 {
-  "dataset_description_path": null,
+  "dataset_description_path": "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives/dataset_description.json",
   "derivative_root": "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives",
   "failure_notes": [],
   "group_command": {
@@ -20,8 +20,6 @@
       "--session-id",
       "1",
       "-m",
-      "T1w",
-      "T2w",
       "bold",
       "--nprocs",
       "2",
@@ -34,23 +32,23 @@
       "--no-sub"
     ],
     "backend": "docker",
-    "duration_seconds": null,
+    "duration_seconds": 1.6690090219999547,
     "environment": {},
-    "exit_code": null,
-    "finished_at": null,
+    "exit_code": 0,
+    "finished_at": "2026-03-08T18:16:31.936467Z",
     "name": "mriqc-group",
-    "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/mriqc/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/mriqc/run-output/work:/clawneuro/work:rw nipreps/mriqc:24.0.0 /clawneuro/input /clawneuro/output group --session-id 1 -m T1w T2w bold --nprocs 2 --omp-nthreads 2 --mem_gb 12 -w /clawneuro/work --no-sub",
-    "started_at": null,
-    "status": "skipped",
-    "stderr_path": null,
-    "stdout_path": null,
+    "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/mriqc/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/mriqc/run-output/work:/clawneuro/work:rw nipreps/mriqc:24.0.0 /clawneuro/input /clawneuro/output group --session-id 1 -m bold --nprocs 2 --omp-nthreads 2 --mem_gb 12 -w /clawneuro/work --no-sub",
+    "started_at": "2026-03-08T18:16:30.267461Z",
+    "status": "succeeded",
+    "stderr_path": "/tmp/clawneuro-m5-work/mriqc/run-output/logs/mriqc-group.stderr.log",
+    "stdout_path": "/tmp/clawneuro-m5-work/mriqc/run-output/logs/mriqc-group.stdout.log",
     "working_directory": null
   },
   "iqm_table_paths": [
+    "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives/group_bold.tsv",
     "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives/sub-UTS01/ses-1/func/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_timeseries.tsv"
   ],
   "modality_coverage": [
-    "anat",
     "bold"
   ],
   "participant_command": {
@@ -73,8 +71,6 @@
       "--session-id",
       "1",
       "-m",
-      "T1w",
-      "T2w",
       "bold",
       "--nprocs",
       "2",
@@ -87,19 +83,22 @@
       "--no-sub"
     ],
     "backend": "docker",
-    "duration_seconds": 674.87383251,
+    "duration_seconds": 355.693531771,
     "environment": {},
-    "exit_code": 1,
-    "finished_at": "2026-03-08T18:03:27.694702Z",
+    "exit_code": 0,
+    "finished_at": "2026-03-08T18:16:30.266842Z",
     "name": "mriqc-participant",
-    "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/mriqc/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/mriqc/run-output/work:/clawneuro/work:rw nipreps/mriqc:24.0.0 /clawneuro/input /clawneuro/output participant --participant-label UTS01 --session-id 1 -m T1w T2w bold --nprocs 2 --omp-nthreads 2 --mem_gb 12 -w /clawneuro/work --no-sub",
-    "started_at": "2026-03-08T17:52:12.820867Z",
-    "status": "failed",
+    "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/mriqc/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/mriqc/run-output/work:/clawneuro/work:rw nipreps/mriqc:24.0.0 /clawneuro/input /clawneuro/output participant --participant-label UTS01 --session-id 1 -m bold --nprocs 2 --omp-nthreads 2 --mem_gb 12 -w /clawneuro/work --no-sub",
+    "started_at": "2026-03-08T18:10:34.573307Z",
+    "status": "succeeded",
     "stderr_path": "/tmp/clawneuro-m5-work/mriqc/run-output/logs/mriqc-participant.stderr.log",
     "stdout_path": "/tmp/clawneuro-m5-work/mriqc/run-output/logs/mriqc-participant.stdout.log",
     "working_directory": null
   },
-  "report_paths": [],
-  "status": "failed",
+  "report_paths": [
+    "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives/group_bold.html",
+    "/tmp/clawneuro-m5-work/mriqc/run-output/derivatives/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.html"
+  ],
+  "status": "succeeded",
   "telemetry_disabled": true
 }
