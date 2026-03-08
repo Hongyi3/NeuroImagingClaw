@@ -26,9 +26,11 @@ python3.11+ -m venv .venv
 
 Heavy upstream MRIQC/fMRIPrep execution is intentionally not part of the default test suite yet.
 Phase 2 live benchmark and container-backed regression coverage remains an opt-in target that
-depends on Docker or Apptainer plus a local public `ds003020` dataset root. The repository-side M5
-prep should still stay covered by unit tests, fixture tests, and benchmark-driver metadata tests in
-the default suite.
+depends on Docker or Apptainer plus a local public `ds003020` dataset root. The pinned Phase 2
+target is the `doi:10.18112/openneuro.ds003020.v3.1.0` `sub-UTS01/ses-1` subset with one T1w
+image and one `task-CategoryLocalizer1_run-1` BOLD run. The repository-side M5 prep should still
+stay covered by unit tests, fixture tests, and benchmark-driver metadata tests in the default
+suite.
 
 To rerun the checked-in public benchmark evidence:
 
@@ -43,6 +45,6 @@ Planned M5 live verification commands once the runtime blocker is cleared:
 ```bash
 python3.14 -m venv /tmp/clawneuro-m5
 /tmp/clawneuro-m5/bin/pip install -e '.[dev]'
-/tmp/clawneuro-m5/bin/python benchmarks/run_phase2_public_mriqc.py --dataset-root <ds003020_root> --workspace /tmp/clawneuro-m5-work/mriqc --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc
-/tmp/clawneuro-m5/bin/python benchmarks/run_phase2_public_anat_bold_prep.py --dataset-root <ds003020_root> --workspace /tmp/clawneuro-m5-work/prep --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep
+/tmp/clawneuro-m5/bin/python benchmarks/run_phase2_public_mriqc.py --dataset-root <ds003020_root> --workspace /tmp/clawneuro-m5-work/mriqc --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc --backend docker
+/tmp/clawneuro-m5/bin/python benchmarks/run_phase2_public_anat_bold_prep.py --dataset-root <ds003020_root> --workspace /tmp/clawneuro-m5-work/prep --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep --backend docker
 ```

@@ -1,6 +1,6 @@
 # Next Milestone
 
-- Status date: March 7, 2026
+- Status date: March 8, 2026
 - Default execution target: **M5 — Phase 2 live execution evidence and exit validation for `mriqc_report` and `anat_bold_prep`**
 
 ## Milestone Mapping
@@ -15,6 +15,10 @@
   harvesting helpers, fixtures, tests, and status updates are present in the repository.
 - The next highest-leverage gap is no longer wrapper shape or benchmark-driver scaffolding; it is
   pinned live execution evidence for MRIQC and fMRIPrep-family preprocessing on public `ds003020`.
+- The benchmark harness now pins the real public dataset contract for `ds003020`
+  (`doi:10.18112/openneuro.ds003020.v3.1.0`, source commit
+  `f74eb2bc95b827d359de338f9086743824d2d906`) and the practical `sub-UTS01/ses-1` subset, so the
+  remaining gap is live execution evidence rather than benchmark-target ambiguity.
 - `docs/ROADMAP.md` still requires Phase 2 to be reproducible on benchmark datasets with preserved
   reports and methods metadata before Phase 2 can be treated as exited.
 
@@ -42,8 +46,8 @@
 ## Exit Criteria
 
 - At least one pinned MRIQC path and one pinned anat/BOLD preprocessing path have checked-in
-  benchmark artifacts for public `ds003020` with exact commands, manifests, and reproducibility
-  files.
+  benchmark artifacts for public `ds003020` with exact commands, manifests, reproducibility files,
+  and explicit dataset DOI / subset metadata.
 - Live execution evidence preserves upstream report locations, derivative metadata, and
   fMRIPrep-family boilerplate in machine-readable manifests.
 - Runtime availability is demonstrated by concrete commands in a reproducible environment, not by

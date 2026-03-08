@@ -1,6 +1,6 @@
 # Active Blockers
 
-- Status date: March 7, 2026
+- Status date: March 8, 2026
 - Impacted milestone: `docs/status/NEXT_MILESTONE.md` (`M5 — Phase 2 live execution evidence and exit validation`)
 
 ## B1 — Live Phase 2 runtimes are unavailable in the inspected workspace
@@ -25,13 +25,14 @@
 
 - Evidence:
   - `find . -maxdepth 3 \\( -type d -o -type f \\) -name '*ds003020*'` returned no results on
-    March 7, 2026.
+    March 8, 2026.
 - Impact:
-  - The repository now contains the benchmark harness for public `ds003020`, but the live run
-    cannot be started locally because the selected benchmark dataset root is absent.
+  - The repository now contains the benchmark harness for the pinned `ds003020`
+    `sub-UTS01/ses-1` subset, but the live run cannot be started locally because that dataset root
+    is absent.
 - Unblock condition:
-  - execute the benchmark drivers in an environment that provides a local `ds003020` BIDS root to
-    pass through `--dataset-root`.
+  - execute the benchmark drivers in an environment that provides a local `ds003020` BIDS root or
+    subset root matching the pinned benchmark files to pass through `--dataset-root`.
 
 ## Monitoring note
 

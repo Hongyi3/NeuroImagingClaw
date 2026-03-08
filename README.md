@@ -70,9 +70,11 @@ python3.14 -m venv /tmp/clawneuro-m3
 The resulting manifests, reports, logs, and reproducibility bundle are checked in under
 `benchmarks/artifacts/phase1_dcm_qa_nih/`.
 
-Phase 2 benchmark drivers are also expected under `benchmarks/`, with public `ds003020` as the
-default target dataset once a container-capable environment is available. Those drivers must take
-an explicit `--dataset-root`; they do not auto-download data inside the benchmark run.
+Phase 2 benchmark drivers are also expected under `benchmarks/`, with public `ds003020`
+(`doi:10.18112/openneuro.ds003020.v3.1.0`) as the default target dataset once a container-capable
+environment is available. The pinned benchmark subset is `sub-UTS01/ses-1` with one T1w image and
+one `task-CategoryLocalizer1_run-1` BOLD run. Those drivers must take an explicit `--dataset-root`;
+they do not auto-download data inside the benchmark run.
 
 ## Reading order for a coding agent
 

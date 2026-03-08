@@ -13,13 +13,14 @@ if str(SCRIPT_ROOT) not in sys.path:
     sys.path.insert(0, str(SCRIPT_ROOT))
 
 from phase2_common import (  # noqa: E402
-    PHASE2_DATASET_ID,
+    PHASE2_SESSION_ID,
     PHASE2_PARTICIPANT_LABEL,
     MRIQC_DOCKER_IMAGE,
     backend_container_image,
     benchmark_header,
     copy_preserved_derivative_files,
     copy_run_support_dirs,
+    inspect_phase2_dataset_root,
     runtime_tool_index,
     verification_command,
     write_benchmark_metadata,
@@ -56,6 +57,7 @@ def main() -> int:
     dataset_root = args.dataset_root.resolve()
     artifact_root = args.artifact_root if args.artifact_root.is_absolute() else (SCRIPT_ROOT.parent / args.artifact_root)
     artifact_root = artifact_root.resolve()
+    dataset_metadata = inspect_phase2_dataset_root(dataset_root)
 
     output_root = workspace / "run-output"
     container_image = backend_container_image(args.backend, MRIQC_DOCKER_IMAGE)
@@ -68,8 +70,12 @@ def main() -> int:
             backend=backend,
             container_image=container_image,
             participant_labels=[PHASE2_PARTICIPANT_LABEL],
+            session_ids=[PHASE2_SESSION_ID],
             modalities=["anat", "bold"],
             run_group=True,
+            nprocs=2,
+            omp_nthreads=2,
+            mem_gb=12,
         )
     )
     if result.status.value != "succeeded":
@@ -90,11 +96,7 @@ def main() -> int:
     metadata.update(
         {
             "clawneuro_version": __version__,
-            "dataset": {
-                "dataset_id": PHASE2_DATASET_ID,
-                "dataset_root": str(dataset_root),
-                "participant_label": PHASE2_PARTICIPANT_LABEL,
-            },
+            "dataset": dataset_metadata,
             "toolchain": {
                 "python_version": sys.version.split()[0],
                 "backend": args.backend,
@@ -104,6 +106,7 @@ def main() -> int:
             "run": {
                 "status": result.status.value,
                 "summary": result.summary,
+                "requested_resources": {"nprocs": 2, "omp_nthreads": 2, "mem_gb": 12},
                 "workspace_relative_output_root": str(output_root.relative_to(workspace)),
                 "verification_command": verification_command(
                     Path(__file__).name,
@@ -122,7 +125,7 @@ def main() -> int:
             },
             "summary_status": summary["status"],
             "notes": [
-                "This benchmark proves one live ds003020 MRIQC path executed with pinned container provenance and preserved QC outputs.",
+                "This benchmark proves one live ds003020 MRIQC path executed on the pinned sub-UTS01/ses-1 subset with container provenance and preserved QC outputs.",
                 "It does not prove downstream modeling, resting-state connectivity, multi-dataset generality, or scientific superiority over upstream tools.",
                 "Copied artifact files preserve selected derivative evidence only; the raw public dataset is not vendored into the repository.",
             ],

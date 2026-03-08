@@ -1,6 +1,6 @@
 # Current Stage
 
-- Status date: March 7, 2026
+- Status date: March 8, 2026
 - Roadmap position: **Phase 2 — QC and preprocessing** (`docs/ROADMAP.md`)
 - Implementation-plan position: **M5 active; repository-prep landed, live evidence still blocked** (`docs/IMPLEMENTATION-PLAN.md`)
 - Implementation-sequence position: Sprint 5 remains the active boundary in
@@ -39,6 +39,15 @@
 - The repository now contains the M5 public benchmark harness in `benchmarks/phase2_common.py`,
   `benchmarks/run_phase2_public_mriqc.py`, `benchmarks/run_phase2_public_anat_bold_prep.py`, and
   `benchmarks/PHASE2_QC_PREP.md`.
+- The Phase 2 benchmark harness now pins the real public dataset identity for `ds003020`: DOI
+  `doi:10.18112/openneuro.ds003020.v3.1.0`, source commit
+  `f74eb2bc95b827d359de338f9086743824d2d906`, and the practical
+  `sub-UTS01/ses-1` benchmark subset with one T1w image plus one
+  `task-CategoryLocalizer1_run-1` BOLD run in `benchmarks/phase2_common.py`,
+  `benchmarks/run_phase2_public_mriqc.py`, `benchmarks/run_phase2_public_anat_bold_prep.py`,
+  `benchmarks/PHASE2_QC_PREP.md`, and `tests/test_benchmark_artifacts.py`.
+- A branch-scoped GitHub Actions path now exists for external Docker-backed M5 execution in
+  `.github/workflows/phase2-live-benchmarks.yml`.
 - The default suite now covers container-provenance downgrade behavior and benchmark-helper
   metadata parsing in `tests/test_core_execution.py`, `tests/test_mriqc_report.py`,
   `tests/test_anat_bold_prep.py`, `tests/test_benchmark_artifacts.py`, and
@@ -46,16 +55,25 @@
 
 ## Verified Commands
 
-The following commands were verified on March 7, 2026 in a clean `python3.14` virtual environment:
+The following commands were verified on March 8, 2026 in a clean `python3.14` virtual environment:
 
 - `python3.14 -m venv /tmp/clawneuro-plan && /tmp/clawneuro-plan/bin/pip install -e '.[dev]'`
   succeeded for the repository-prep verification path.
-- `/tmp/clawneuro-plan/bin/python -m pytest` returned `57 passed in 1.53s`.
+- `/tmp/clawneuro-m5-full/bin/python -m pytest` returned `59 passed in 2.52s`.
 - `/tmp/clawneuro-plan/bin/ruff check src tests benchmarks` returned `All checks passed!`.
 - `/tmp/clawneuro-plan/bin/python benchmarks/run_phase2_public_mriqc.py --help` rendered the
   expected `--dataset-root`, `--workspace`, `--artifact-root`, and `--backend` contract.
 - `/tmp/clawneuro-plan/bin/python benchmarks/run_phase2_public_anat_bold_prep.py --help` rendered
   the expected `--dataset-root`, `--workspace`, `--artifact-root`, and `--backend` contract.
+- A focused verification path for the updated Phase 2 benchmark contract returned:
+  - `/tmp/clawneuro-m5-prep/bin/python -m pytest tests/test_benchmark_artifacts.py tests/test_cli.py tests/test_mriqc_report.py tests/test_anat_bold_prep.py`
+    -> `25 passed in 0.66s`
+  - `/tmp/clawneuro-m5-prep/bin/ruff check benchmarks tests`
+    -> `All checks passed!`
+- An external dataset probe returned:
+  - `/tmp/awscli-phase2/bin/aws s3 ls --no-sign-request s3://openneuro.org/ds003020/sub-UTS01/ses-1/ --recursive`
+    confirmed the pinned T1w and `task-CategoryLocalizer1_run-1` BOLD inputs are publicly
+    fetchable from OpenNeuro's public bucket.
 
 ## Why the Repository Has Advanced
 
@@ -70,6 +88,8 @@ The following commands were verified on March 7, 2026 in a clean `python3.14` vi
 - The M5 benchmark harness and protocol note are now present in-repository, so the remaining gap is
   no longer driver implementation; it is execution of those drivers in a container-capable
   environment with public `ds003020`.
+- The repository-prep layer for M5 is now more faithful to the actual benchmark target because the
+  Phase 2 drivers no longer refer to a nonexistent `participant 01` path for `ds003020`.
 
 ## Remaining Repository Reality
 
@@ -77,7 +97,8 @@ The following commands were verified on March 7, 2026 in a clean `python3.14` vi
   contract-level rather than benchmark-level.
 - `docker`, `apptainer`, `mriqc`, and `fmriprep` are all absent in the inspected workspace, so live
   Phase 2 execution evidence is blocked locally and tracked in `docs/status/BLOCKERS.md`.
-- No local `ds003020` dataset root exists in the inspected workspace, so the benchmark target is not
-  presently runnable here even after the driver scripts were added.
+- No local `ds003020` subset root matching the pinned `sub-UTS01/ses-1` benchmark contract exists
+  in the inspected workspace, so the benchmark target is not presently runnable here even after the
+  driver scripts were corrected.
 - Phase 3 skills (`task_glm`, `rest_connectivity`, `report_bundle`, `repro_bundle`) and Phase 4
   diffusion work remain unimplemented at runtime level.

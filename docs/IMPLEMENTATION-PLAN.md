@@ -133,8 +133,8 @@ File targets:
 Deliverables:
 - pinned live-execution path for `mriqc_report` in a container-capable environment;
 - pinned live-execution path for `anat_bold_prep` in a container-capable environment;
-- public-case Phase 2 target fixed to `ds003020` participant `01` with anatomical and BOLD
-  coverage;
+- public-case Phase 2 target fixed to `ds003020` DOI `doi:10.18112/openneuro.ds003020.v3.1.0`
+  using the pinned `sub-UTS01/ses-1` subset with one T1w image and one BOLD run;
 - Docker as the default benchmark backend, with Apptainer supported as the fallback execution path;
 - benchmark drivers and shared helpers that can reproduce a live MRIQC run and a live
   fMRIPrep-family preprocessing run without downloading data implicitly inside the benchmark script;

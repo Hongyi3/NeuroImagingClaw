@@ -1,6 +1,6 @@
 # Milestone Log
 
-- Status date: March 7, 2026
+- Status date: March 8, 2026
 - Recording rule: entries are added only when milestone completion can be supported by concrete
   repository artifacts. Exact historical completion dates are not invented; this log records what
   is observable by inspection.
@@ -138,8 +138,19 @@
   - `tests/test_anat_bold_prep.py`
   - `tests/test_benchmark_artifacts.py`
   - `tests/test_provenance.py`
-- `/tmp/clawneuro-plan/bin/python -m pytest` returned `57 passed in 1.53s` and
-  `/tmp/clawneuro-plan/bin/ruff check src tests benchmarks` returned `All checks passed!` on
-  March 7, 2026 for the repository-prep state.
+- `/tmp/clawneuro-m5-full/bin/python -m pytest` returned `59 passed in 2.52s` and
+  `/tmp/clawneuro-m5-full/bin/ruff check src tests benchmarks` returned `All checks passed!` on
+  March 8, 2026 for the repository-prep state.
 - `docs/status/BLOCKERS.md` still records the runtime-availability and dataset-availability
   blockers for that milestone in the inspected workspace, so M5 is not yet logged as complete.
+- As of March 8, 2026, the M5 repository-prep layer also pins the real public `ds003020` contract
+  through:
+  - `benchmarks/phase2_common.py`
+  - `benchmarks/run_phase2_public_mriqc.py`
+  - `benchmarks/run_phase2_public_anat_bold_prep.py`
+  - `benchmarks/PHASE2_QC_PREP.md`
+  - `tests/test_benchmark_artifacts.py`
+  - `.github/workflows/phase2-live-benchmarks.yml`
+- Those files freeze the dataset DOI `doi:10.18112/openneuro.ds003020.v3.1.0`, source commit
+  `f74eb2bc95b827d359de338f9086743824d2d906`, and the practical `sub-UTS01/ses-1` subset needed
+  for the first live MRIQC and anat/BOLD preprocessing evidence pass.

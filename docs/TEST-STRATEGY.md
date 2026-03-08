@@ -90,19 +90,22 @@ Targets:
 - `anat_bold_prep`
 - `benchmarks/run_phase2_public_mriqc.py`
 - `benchmarks/run_phase2_public_anat_bold_prep.py`
-- Docker-first live execution with Apptainer fallback on public `ds003020`
+- Docker-first live execution with Apptainer fallback on public `ds003020` DOI
+  `doi:10.18112/openneuro.ds003020.v3.1.0`
 
 Goal:
 - prove that QC and preprocessing wrappers preserve upstream reports, boilerplate, and container
   provenance in a real runtime environment, not only through synthetic fixtures.
+- keep the live Phase 2 path small enough for reproducible reruns by pinning the benchmark subset
+  to `sub-UTS01/ses-1` with one T1w image and one `task-CategoryLocalizer1_run-1` BOLD run.
 
 Verification path once the runtime blocker is cleared:
 
 ```bash
 python3.14 -m venv /tmp/clawneuro-m5
 /tmp/clawneuro-m5/bin/pip install -e '.[dev]'
-/tmp/clawneuro-m5/bin/python benchmarks/run_phase2_public_mriqc.py --dataset-root <ds003020_root> --workspace /tmp/clawneuro-m5-work/mriqc --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc
-/tmp/clawneuro-m5/bin/python benchmarks/run_phase2_public_anat_bold_prep.py --dataset-root <ds003020_root> --workspace /tmp/clawneuro-m5-work/prep --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep
+/tmp/clawneuro-m5/bin/python benchmarks/run_phase2_public_mriqc.py --dataset-root <ds003020_root> --workspace /tmp/clawneuro-m5-work/mriqc --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc --backend docker
+/tmp/clawneuro-m5/bin/python benchmarks/run_phase2_public_anat_bold_prep.py --dataset-root <ds003020_root> --workspace /tmp/clawneuro-m5-work/prep --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep --backend docker
 ```
 
 ## Fixture policy

@@ -2,7 +2,7 @@
 
 ## Status
 
-As of March 7, 2026, this repository contains the M5 benchmark harness for public `ds003020`, but
+As of March 8, 2026, this repository contains the M5 benchmark harness for public `ds003020`, but
 it does **not** yet contain checked-in live artifact trees for MRIQC or fMRIPrep-family
 preprocessing. The inspected workspace lacked `docker`, `apptainer`, `mriqc`, and `fmriprep`, so
 the live execution step remains blocked and must be completed in a separate reproducible
@@ -11,11 +11,22 @@ environment.
 ## Target dataset and scope
 
 - Dataset: `ds003020`
-- Participant: `01`
+- Frozen dataset DOI: `doi:10.18112/openneuro.ds003020.v3.1.0`
+- Source repository: `OpenNeuroDatasets/ds003020`
+- Source commit inspected on March 8, 2026: `f74eb2bc95b827d359de338f9086743824d2d906`
+- Benchmark subset: `sub-UTS01/ses-1`
+- Participant: `UTS01`
+- Session: `1`
+- Required inputs:
+  - `sub-UTS01/ses-1/anat/sub-UTS01_ses-1_T1w.nii.gz`
+  - `sub-UTS01/ses-1/func/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.nii.gz`
+  - `sub-UTS01/ses-1/func/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.json`
 - Scope:
-  - MRIQC with `anat` and `bold` modalities plus the explicit group-level pass
+  - MRIQC with `anat` and `bold` modalities plus the explicit group-level pass on the pinned
+    `sub-UTS01/ses-1` subset
   - anat/BOLD preprocessing with `--output-layout bids`
   - FreeSurfer disabled for the baseline benchmark path
+  - explicit resource envelope of `nprocs=2`, `omp_nthreads=2`, and `mem_gb=12` / `mem_mb=12000`
 
 ## Pinned container references
 
@@ -44,6 +55,8 @@ python3.14 -m venv /tmp/clawneuro-m5
 ```
 
 Apptainer is the supported fallback when Docker is unavailable.
+The benchmark scripts do not download data implicitly; the caller must provide a local ds003020
+subset root that satisfies the pinned files above.
 
 ## Preserved outputs required from a live run
 
@@ -66,10 +79,11 @@ Apptainer is the supported fallback when Docker is unavailable.
 ## What the eventual live evidence will prove
 
 - One public `ds003020` MRIQC path and one public `ds003020` anat/BOLD preprocessing path execute
-  successfully through ClawNeuro's wrappers.
+  successfully through ClawNeuro's wrappers on the pinned `sub-UTS01/ses-1` subset.
 - The wrappers preserve upstream reports, IQM/confounds tables, derivative metadata, and
   boilerplate in machine-readable manifests.
-- Container runtime and image identifiers are recorded explicitly rather than assumed.
+- Container runtime and image identifiers plus the pinned dataset DOI and source commit are
+  recorded explicitly rather than assumed.
 
 ## What it will not prove
 

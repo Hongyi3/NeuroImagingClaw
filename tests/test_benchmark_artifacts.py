@@ -2,10 +2,18 @@ from __future__ import annotations
 
 import json
 
+import pytest
+
 from benchmarks.phase2_common import (
+    PHASE2_DATASET_DOI,
+    PHASE2_DATASET_SOURCE_COMMIT,
+    PHASE2_PARTICIPANT_LABEL,
+    PHASE2_REQUIRED_INPUTS,
+    PHASE2_SESSION_ID,
     benchmark_header,
     copy_preserved_derivative_files,
     copy_run_support_dirs,
+    inspect_phase2_dataset_root,
     runtime_tool_index,
     write_benchmark_metadata,
 )
@@ -81,9 +89,56 @@ def test_phase2_common_helpers_copy_artifacts_and_write_metadata(tmp_path):
     assert parsed["toolchain"]["runtime_tools"]["mriqc"]["container_digest"] == "sha256:test"
 
 
+def test_phase2_dataset_root_validation_requires_pinned_subset(tmp_path):
+    dataset_root = tmp_path / "ds003020"
+    dataset_root.mkdir(parents=True, exist_ok=True)
+    (dataset_root / "dataset_description.json").write_text(
+        json.dumps({"Name": "Pinned ds003020 subset", "DatasetDOI": PHASE2_DATASET_DOI}) + "\n",
+        encoding="utf-8",
+    )
+    (dataset_root / "participants.tsv").write_text(
+        "participant_id\tage\tsex\nsub-UTS01\t24\tF\n",
+        encoding="utf-8",
+    )
+    for relative in PHASE2_REQUIRED_INPUTS:
+        destination = dataset_root / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text("stub\n", encoding="utf-8")
+
+    metadata = inspect_phase2_dataset_root(dataset_root)
+
+    assert metadata["participant_label"] == PHASE2_PARTICIPANT_LABEL
+    assert metadata["session_id"] == PHASE2_SESSION_ID
+    assert metadata["source_commit"] == PHASE2_DATASET_SOURCE_COMMIT
+    assert metadata["selected_inputs"] == [str(path) for path in PHASE2_REQUIRED_INPUTS]
+
+
+def test_phase2_dataset_root_validation_rejects_unpinned_dataset(tmp_path):
+    dataset_root = tmp_path / "ds003020"
+    dataset_root.mkdir(parents=True, exist_ok=True)
+    (dataset_root / "dataset_description.json").write_text(
+        json.dumps({"Name": "Wrong ds003020 subset", "DatasetDOI": "doi:10.18112/openneuro.ds003020.v0.0.1"}) + "\n",
+        encoding="utf-8",
+    )
+    (dataset_root / "participants.tsv").write_text(
+        "participant_id\tage\tsex\nsub-UTS01\t24\tF\n",
+        encoding="utf-8",
+    )
+    for relative in PHASE2_REQUIRED_INPUTS:
+        destination = dataset_root / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text("stub\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="pinned ds003020 DOI"):
+        inspect_phase2_dataset_root(dataset_root)
+
+
 def test_phase2_benchmark_note_documents_ds003020_path(repo_root):
     note = (repo_root / "benchmarks" / "PHASE2_QC_PREP.md").read_text(encoding="utf-8")
 
     assert "ds003020" in note
+    assert "UTS01" in note
+    assert "ses-1" in note
+    assert PHASE2_DATASET_DOI in note
     assert "run_phase2_public_mriqc.py" in note
     assert "run_phase2_public_anat_bold_prep.py" in note

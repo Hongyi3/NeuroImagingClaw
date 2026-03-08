@@ -1,0 +1,129 @@
+name: phase2-live-benchmarks
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "codex/**"
+    paths:
+      - ".github/workflows/phase2-live-benchmarks.yml"
+      - "benchmarks/**"
+      - "src/**"
+      - "tests/**"
+      - "docs/**"
+      - "README.md"
+    paths-ignore:
+      - "benchmarks/artifacts/phase2_ds003020_mriqc/**"
+      - "benchmarks/artifacts/phase2_ds003020_anat_bold_prep/**"
+
+permissions:
+  contents: write
+
+jobs:
+  phase2-live-evidence:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install repository and benchmark dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev]' awscli
+
+      - name: Verify Docker runtime
+        run: |
+          docker --version
+          docker info
+
+      - name: Download pinned ds003020 subset
+        env:
+          DATASET_ROOT: /tmp/clawneuro-phase2-ds003020
+        run: |
+          rm -rf "$DATASET_ROOT"
+          aws s3 sync --no-sign-request s3://openneuro.org/ds003020 "$DATASET_ROOT" \
+            --exclude "*" \
+            --include "dataset_description.json" \
+            --include "participants.tsv" \
+            --include "sub-UTS01/ses-1/anat/sub-UTS01_ses-1_T1w.nii.gz" \
+            --include "sub-UTS01/ses-1/func/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.json" \
+            --include "sub-UTS01/ses-1/func/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.nii.gz"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          dataset_root = Path("/tmp/clawneuro-phase2-ds003020")
+          required = [
+              Path("dataset_description.json"),
+              Path("participants.tsv"),
+              Path("sub-UTS01/ses-1/anat/sub-UTS01_ses-1_T1w.nii.gz"),
+              Path("sub-UTS01/ses-1/func/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.json"),
+              Path("sub-UTS01/ses-1/func/sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.nii.gz"),
+          ]
+          missing = [str(path) for path in required if not (dataset_root / path).exists()]
+          if missing:
+              raise SystemExit(f"Missing benchmark inputs: {missing}")
+          dataset_description = json.loads((dataset_root / "dataset_description.json").read_text(encoding="utf-8"))
+          doi = dataset_description.get("DatasetDOI")
+          if doi != "doi:10.18112/openneuro.ds003020.v3.1.0":
+              raise SystemExit(f"Unexpected DatasetDOI: {doi!r}")
+          print(json.dumps({"dataset_root": str(dataset_root), "dataset_doi": doi}, indent=2))
+          PY
+
+      - name: Pull pinned containers
+        run: |
+          docker pull nipreps/mriqc:24.0.0
+          docker pull nipreps/fmriprep:23.1.2
+
+      - name: Run MRIQC Phase 2 benchmark
+        run: |
+          python benchmarks/run_phase2_public_mriqc.py \
+            --dataset-root /tmp/clawneuro-phase2-ds003020 \
+            --workspace /tmp/clawneuro-m5-work/mriqc \
+            --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc \
+            --backend docker
+
+      - name: Run anat/BOLD preprocessing Phase 2 benchmark
+        run: |
+          python benchmarks/run_phase2_public_anat_bold_prep.py \
+            --dataset-root /tmp/clawneuro-phase2-ds003020 \
+            --workspace /tmp/clawneuro-m5-work/prep \
+            --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep \
+            --backend docker
+
+      - name: Verify repository after benchmark execution
+        run: |
+          python -m pytest
+          ruff check src tests benchmarks
+
+      - name: Upload benchmark artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-live-benchmark-artifacts
+          path: |
+            benchmarks/artifacts/phase2_ds003020_mriqc
+            benchmarks/artifacts/phase2_ds003020_anat_bold_prep
+
+      - name: Commit generated live benchmark artifacts
+        if: success()
+        run: |
+          if git diff --quiet -- benchmarks/artifacts/phase2_ds003020_mriqc benchmarks/artifacts/phase2_ds003020_anat_bold_prep; then
+            echo "No benchmark artifact changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add benchmarks/artifacts/phase2_ds003020_mriqc benchmarks/artifacts/phase2_ds003020_anat_bold_prep
+          git commit -m "benchmarks: add phase2 ds003020 live artifacts"
+          git push origin HEAD:${GITHUB_REF_NAME}
