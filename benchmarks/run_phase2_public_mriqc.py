@@ -51,6 +51,31 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def build_phase2_mriqc_config(
+    *,
+    dataset_root: Path,
+    output_root: Path,
+    backend: ExecutionBackend,
+    container_image: str,
+) -> MRIQCReportConfig:
+    """Return the pinned Phase 2 MRIQC execution contract."""
+
+    return MRIQCReportConfig(
+        bids_root=dataset_root,
+        output_root=output_root,
+        execute=True,
+        backend=backend,
+        container_image=container_image,
+        participant_labels=[PHASE2_PARTICIPANT_LABEL],
+        session_ids=[PHASE2_SESSION_ID],
+        modalities=["bold"],
+        run_group=True,
+        nprocs=2,
+        omp_nthreads=2,
+        mem_gb=12,
+    )
+
+
 def main() -> int:
     args = parse_args()
     workspace = args.workspace.resolve()
@@ -63,19 +88,11 @@ def main() -> int:
     container_image = backend_container_image(args.backend, MRIQC_DOCKER_IMAGE)
     backend = ExecutionBackend(args.backend)
     result = run_mriqc_report(
-        MRIQCReportConfig(
-            bids_root=dataset_root,
+        build_phase2_mriqc_config(
+            dataset_root=dataset_root,
             output_root=output_root,
-            execute=True,
             backend=backend,
             container_image=container_image,
-            participant_labels=[PHASE2_PARTICIPANT_LABEL],
-            session_ids=[PHASE2_SESSION_ID],
-            modalities=["anat", "bold"],
-            run_group=True,
-            nprocs=2,
-            omp_nthreads=2,
-            mem_gb=12,
         )
     )
     if result.status.value != "succeeded":
@@ -138,7 +155,8 @@ def main() -> int:
             },
             "summary_status": summary["status"],
             "notes": [
-                "This benchmark proves one live ds003020 MRIQC path executed on the pinned sub-UTS01/ses-1 subset with container provenance and preserved QC outputs.",
+                "This benchmark proves one live ds003020 MRIQC BOLD path executed on the pinned sub-UTS01/ses-1 subset with container provenance and preserved QC outputs.",
+                "The live benchmark currently excludes anatomical MRIQC on this subset because nipreps/mriqc:24.0.0 produced non-JSON-compliant NaN IQM values in the participant datasink during March 8, 2026 execution debugging.",
                 "It does not prove downstream modeling, resting-state connectivity, multi-dataset generality, or scientific superiority over upstream tools.",
                 "Copied artifact files preserve selected derivative evidence only; the raw public dataset is not vendored into the repository.",
             ],

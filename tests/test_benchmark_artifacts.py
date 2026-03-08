@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 
 import pytest
@@ -142,3 +143,26 @@ def test_phase2_benchmark_note_documents_ds003020_path(repo_root):
     assert PHASE2_DATASET_DOI in note
     assert "run_phase2_public_mriqc.py" in note
     assert "run_phase2_public_anat_bold_prep.py" in note
+
+
+def test_phase2_mriqc_benchmark_requests_bold_only_contract(repo_root, tmp_path):
+    module_path = repo_root / "benchmarks" / "run_phase2_public_mriqc.py"
+    spec = importlib.util.spec_from_file_location("phase2_public_mriqc", module_path)
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    dataset_root = tmp_path / "dataset"
+    dataset_root.mkdir()
+
+    config = module.build_phase2_mriqc_config(
+        dataset_root=dataset_root,
+        output_root=tmp_path / "output",
+        backend=module.ExecutionBackend.DOCKER,
+        container_image="nipreps/mriqc:24.0.0",
+    )
+
+    assert config.participant_labels == [PHASE2_PARTICIPANT_LABEL]
+    assert config.session_ids == [PHASE2_SESSION_ID]
+    assert config.modalities == ["bold"]
+    assert config.run_group is True
