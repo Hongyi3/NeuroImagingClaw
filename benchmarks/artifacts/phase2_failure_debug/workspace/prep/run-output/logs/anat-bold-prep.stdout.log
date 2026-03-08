@@ -1,0 +1,45 @@
+bids-validator@1.11.0
+	1: [WARN] The recommended file /README is missing. See Section 03 (Modality agnostic files) of the BIDS specification. (code: 101 - README_FILE_MISSING)
+
+	Please visit https://neurostars.org/search?q=README_FILE_MISSING for existing conversations about this issue.
+
+        Summary:                Available Tasks:        Available Modalities: 
+        5 Files, 93.07MB                                MRI                   
+        1 - Subject                                                           
+        1 - Session                                                           
+
+
+	If you have any questions, please post on https://neurostars.org/tags/bids.
+260308-19:24:13,58 nipype.workflow IMPORTANT:
+	 Running fMRIPrep version 23.1.2
+
+         License NOTICE ##################################################
+         fMRIPrep 23.1.2
+         Copyright 2023 The NiPreps Developers.
+         
+         This product includes software developed by
+         the NiPreps Community (https://nipreps.org/).
+         
+         Portions of this software were developed at the Department of
+         Psychology at Stanford University, Stanford, CA, US.
+         
+         This software is also distributed as a Docker container image.
+         The bootstrapping file for the image ("Dockerfile") is licensed
+         under the MIT License.
+         
+         This software may be distributed through an add-on package called
+         "Docker Wrapper" that is under the BSD 3-clause License.
+         #################################################################
+260308-19:24:13,69 nipype.workflow IMPORTANT:
+	 Building fMRIPrep's workflow:
+           * BIDS dataset path: /clawneuro/input.
+           * Participant list: ['UTS01'].
+           * Run identifier: 20260308-192404_81b3de12-a256-4cc2-9362-4e6546561fa2.
+           * Output spaces: MNI152NLin2009cAsym:res-2.
+           * Pre-run FreeSurfer's SUBJECTS_DIR: /clawneuro/output/sourcedata/freesurfer.
+260308-19:24:13,470 nipype.workflow INFO:
+	 No single-band-reference found for sub-UTS01_ses-1_task-CategoryLocalizer1_run-1_bold.nii.gz.
+260308-19:24:13,570 nipype.workflow IMPORTANT:
+	 BOLD series will be slice-timing corrected to an offset of 0.954s.
+260308-19:24:15,169 nipype.workflow CRITICAL:
+	 ERROR: a valid license file is required for FreeSurfer to run. fMRIPrep looked for an existing license file at several paths, in this order: 1) command line argument ``--fs-license-file``; 2) ``$FS_LICENSE`` environment variable; and 3) the ``$FREESURFER_HOME/license.txt`` path. Get it (for free) by registering at https://surfer.nmr.mgh.harvard.edu/registration.html

@@ -1,0 +1,423 @@
+{
+  "status": "failed",
+  "summary": "Preprocessing execution failed; inspect the captured logs.",
+  "warnings": [
+    {
+      "code": "anat-bold-prep-execution-failed",
+      "severity": "error",
+      "message": "Preprocessing execution failed before the expected outputs were harvested.",
+      "hint": "Inspect the captured stdout and stderr logs."
+    }
+  ],
+  "artifacts": [
+    {
+      "kind": "manifest",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/manifests/anat-bold-prep-summary.json",
+      "description": "Machine-readable preprocessing wrapper summary.",
+      "media_type": "application/json",
+      "generated_by": "anat_bold_prep"
+    },
+    {
+      "kind": "report",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/report/anat-bold-prep-report.md",
+      "description": "Human-readable preprocessing wrapper summary.",
+      "media_type": "text/markdown",
+      "generated_by": "anat_bold_prep"
+    },
+    {
+      "kind": "log",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/logs/anat-bold-prep.stdout.log",
+      "description": "Preprocessing stdout log.",
+      "media_type": "text/plain",
+      "generated_by": "anat_bold_prep"
+    },
+    {
+      "kind": "log",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/logs/anat-bold-prep.stderr.log",
+      "description": "Preprocessing stderr log.",
+      "media_type": "text/plain",
+      "generated_by": "anat_bold_prep"
+    },
+    {
+      "kind": "derivative",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/derivatives",
+      "description": "Derivative output root preserved from the wrapped upstream tool.",
+      "media_type": null,
+      "generated_by": "anat_bold_prep"
+    },
+    {
+      "kind": "manifest",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/manifests/run-manifest.json",
+      "description": "Canonical machine-readable run manifest.",
+      "media_type": "application/json",
+      "generated_by": null
+    },
+    {
+      "kind": "config",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/manifests/requested-config.json",
+      "description": "Requested configuration snapshot for the run.",
+      "media_type": "application/json",
+      "generated_by": null
+    },
+    {
+      "kind": "provenance",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/provenance/commands.sh",
+      "description": "Exact commands captured for this run.",
+      "media_type": "text/x-shellscript",
+      "generated_by": null
+    },
+    {
+      "kind": "provenance",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/provenance/environment.yml",
+      "description": "Minimal environment snapshot for reproducibility.",
+      "media_type": "text/yaml",
+      "generated_by": null
+    },
+    {
+      "kind": "provenance",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/provenance/checksums.sha256",
+      "description": "Checksums for emitted artifacts.",
+      "media_type": "text/plain",
+      "generated_by": null
+    },
+    {
+      "kind": "log",
+      "path": "/tmp/clawneuro-m5-work/prep/run-output/provenance/analysis_log.md",
+      "description": "Human-readable analysis log with warnings and notes.",
+      "media_type": "text/markdown",
+      "generated_by": null
+    }
+  ],
+  "summary_manifest": {
+    "boilerplate_paths": [],
+    "command": {
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro",
+        "-v",
+        "/tmp/clawneuro-m5-work/prep/run-output/derivatives:/clawneuro/output:rw",
+        "-v",
+        "/tmp/clawneuro-m5-work/prep/run-output/work:/clawneuro/work:rw",
+        "nipreps/fmriprep:23.1.2",
+        "/clawneuro/input",
+        "/clawneuro/output",
+        "participant",
+        "--participant-label",
+        "UTS01",
+        "--output-layout",
+        "bids",
+        "--output-spaces",
+        "MNI152NLin2009cAsym:res-2",
+        "--work-dir",
+        "/clawneuro/work",
+        "--notrack",
+        "--fs-no-reconall",
+        "--nprocs",
+        "2",
+        "--omp-nthreads",
+        "2",
+        "--mem-mb",
+        "12000"
+      ],
+      "backend": "docker",
+      "duration_seconds": 15.665624391000051,
+      "environment": {},
+      "exit_code": 126,
+      "finished_at": "2026-03-08T19:24:17.101121Z",
+      "name": "anat-bold-prep",
+      "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/prep/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/prep/run-output/work:/clawneuro/work:rw nipreps/fmriprep:23.1.2 /clawneuro/input /clawneuro/output participant --participant-label UTS01 --output-layout bids --output-spaces MNI152NLin2009cAsym:res-2 --work-dir /clawneuro/work --notrack --fs-no-reconall --nprocs 2 --omp-nthreads 2 --mem-mb 12000",
+      "started_at": "2026-03-08T19:24:01.435494Z",
+      "status": "failed",
+      "stderr_path": "/tmp/clawneuro-m5-work/prep/run-output/logs/anat-bold-prep.stderr.log",
+      "stdout_path": "/tmp/clawneuro-m5-work/prep/run-output/logs/anat-bold-prep.stdout.log",
+      "working_directory": null
+    },
+    "confounds_file_count": 0,
+    "confounds_paths": [],
+    "dataset_description_path": null,
+    "derivative_root": "/tmp/clawneuro-m5-work/prep/run-output/derivatives",
+    "failure_notes": [],
+    "freesurfer_enabled": false,
+    "output_spaces": [
+      "MNI152NLin2009cAsym:res-2"
+    ],
+    "report_paths": [],
+    "reuse_derivative_roots": [],
+    "status": "failed"
+  },
+  "run_manifest": {
+    "artifacts": [
+      {
+        "description": "Machine-readable preprocessing wrapper summary.",
+        "generated_by": "anat_bold_prep",
+        "kind": "manifest",
+        "media_type": "application/json",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/manifests/anat-bold-prep-summary.json"
+      },
+      {
+        "description": "Human-readable preprocessing wrapper summary.",
+        "generated_by": "anat_bold_prep",
+        "kind": "report",
+        "media_type": "text/markdown",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/report/anat-bold-prep-report.md"
+      },
+      {
+        "description": "Preprocessing stdout log.",
+        "generated_by": "anat_bold_prep",
+        "kind": "log",
+        "media_type": "text/plain",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/logs/anat-bold-prep.stdout.log"
+      },
+      {
+        "description": "Preprocessing stderr log.",
+        "generated_by": "anat_bold_prep",
+        "kind": "log",
+        "media_type": "text/plain",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/logs/anat-bold-prep.stderr.log"
+      },
+      {
+        "description": "Derivative output root preserved from the wrapped upstream tool.",
+        "generated_by": "anat_bold_prep",
+        "kind": "derivative",
+        "media_type": null,
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/derivatives"
+      },
+      {
+        "description": "Canonical machine-readable run manifest.",
+        "generated_by": null,
+        "kind": "manifest",
+        "media_type": "application/json",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/manifests/run-manifest.json"
+      },
+      {
+        "description": "Requested configuration snapshot for the run.",
+        "generated_by": null,
+        "kind": "config",
+        "media_type": "application/json",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/manifests/requested-config.json"
+      },
+      {
+        "description": "Exact commands captured for this run.",
+        "generated_by": null,
+        "kind": "provenance",
+        "media_type": "text/x-shellscript",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/provenance/commands.sh"
+      },
+      {
+        "description": "Minimal environment snapshot for reproducibility.",
+        "generated_by": null,
+        "kind": "provenance",
+        "media_type": "text/yaml",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/provenance/environment.yml"
+      },
+      {
+        "description": "Checksums for emitted artifacts.",
+        "generated_by": null,
+        "kind": "provenance",
+        "media_type": "text/plain",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/provenance/checksums.sha256"
+      },
+      {
+        "description": "Human-readable analysis log with warnings and notes.",
+        "generated_by": null,
+        "kind": "log",
+        "media_type": "text/markdown",
+        "path": "/tmp/clawneuro-m5-work/prep/run-output/provenance/analysis_log.md"
+      }
+    ],
+    "benchmark_tracks": [
+      "smoke",
+      "task-fmri",
+      "resting-state"
+    ],
+    "clawneuro_version": "0.1.0",
+    "created_at": "2026-03-08T19:24:17.105549Z",
+    "dataset_inventory": {
+      "dataset_description_path": "/tmp/clawneuro-phase2-ds003020/dataset_description.json",
+      "dataset_name": "An fMRI dataset during a passive natural language listening task",
+      "dataset_readme_path": null,
+      "dataset_type": "raw",
+      "file_count": 3,
+      "files_by_modality": {
+        "anat": 1,
+        "bold": 2
+      },
+      "has_dataset_description": true,
+      "modalities": [
+        "anat",
+        "bold"
+      ],
+      "root": "/tmp/clawneuro-phase2-ds003020",
+      "session_ids": [
+        "ses-1"
+      ],
+      "subject_ids": [
+        "sub-UTS01"
+      ]
+    },
+    "handoff_targets": [
+      "task_glm",
+      "rest_connectivity",
+      "report_bundle",
+      "repro_bundle"
+    ],
+    "input_state": {
+      "contains_dicom": false,
+      "dataset_description_present": true,
+      "kind": "bids",
+      "modalities": [
+        "anat",
+        "bold"
+      ],
+      "notes": [],
+      "participant_ids": [
+        "sub-UTS01"
+      ],
+      "readable": true,
+      "root": "/tmp/clawneuro-phase2-ds003020"
+    },
+    "provenance": {
+      "commands": [
+        {
+          "argv": [
+            "docker",
+            "run",
+            "--rm",
+            "-v",
+            "/tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro",
+            "-v",
+            "/tmp/clawneuro-m5-work/prep/run-output/derivatives:/clawneuro/output:rw",
+            "-v",
+            "/tmp/clawneuro-m5-work/prep/run-output/work:/clawneuro/work:rw",
+            "nipreps/fmriprep:23.1.2",
+            "/clawneuro/input",
+            "/clawneuro/output",
+            "participant",
+            "--participant-label",
+            "UTS01",
+            "--output-layout",
+            "bids",
+            "--output-spaces",
+            "MNI152NLin2009cAsym:res-2",
+            "--work-dir",
+            "/clawneuro/work",
+            "--notrack",
+            "--fs-no-reconall",
+            "--nprocs",
+            "2",
+            "--omp-nthreads",
+            "2",
+            "--mem-mb",
+            "12000"
+          ],
+          "backend": "docker",
+          "duration_seconds": 15.665624391000051,
+          "environment": {},
+          "exit_code": 126,
+          "finished_at": "2026-03-08T19:24:17.101121Z",
+          "name": "anat-bold-prep",
+          "shell_command": "docker run --rm -v /tmp/clawneuro-phase2-ds003020:/clawneuro/input:ro -v /tmp/clawneuro-m5-work/prep/run-output/derivatives:/clawneuro/output:rw -v /tmp/clawneuro-m5-work/prep/run-output/work:/clawneuro/work:rw nipreps/fmriprep:23.1.2 /clawneuro/input /clawneuro/output participant --participant-label UTS01 --output-layout bids --output-spaces MNI152NLin2009cAsym:res-2 --work-dir /clawneuro/work --notrack --fs-no-reconall --nprocs 2 --omp-nthreads 2 --mem-mb 12000",
+          "started_at": "2026-03-08T19:24:01.435494Z",
+          "status": "failed",
+          "stderr_path": "/tmp/clawneuro-m5-work/prep/run-output/logs/anat-bold-prep.stderr.log",
+          "stdout_path": "/tmp/clawneuro-m5-work/prep/run-output/logs/anat-bold-prep.stdout.log",
+          "working_directory": null
+        }
+      ],
+      "environment": {
+        "hostname": "runnervm0kj6c",
+        "platform": "Linux-6.14.0-1017-azure-x86_64-with-glibc2.39",
+        "python_executable": "/opt/hostedtoolcache/Python/3.14.3/x64/bin/python",
+        "python_version": "3.14.3",
+        "safe_environment": {
+          "PATH": "/opt/hostedtoolcache/Python/3.14.3/x64/bin:/opt/hostedtoolcache/Python/3.14.3/x64:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+        }
+      },
+      "input_checksums": {},
+      "notes": [
+        "Preprocessing requests keep report, boilerplate, and derivative metadata harvest points explicit in the run manifest.",
+        "fMRIPrep-family requests are rendered with --output-layout bids, explicit work-dir handling, and preserved boilerplate capture points."
+      ],
+      "output_checksums": {
+        "logs/anat-bold-prep.stderr.log": "9c3adf2630910618897115478cc7b0ca16c0a543d5760e4e805aa682eac046b6",
+        "logs/anat-bold-prep.stdout.log": "85e045d8accb393199c46ea64f4f26306212522e08b4c1c47ab9d71d36e3139f",
+        "manifests/anat-bold-prep-summary.json": "75719cdbe402fecbd7f045498890b15f5da8b44fc5cc19b9d92dde9f9df35257",
+        "manifests/requested-config.json": "e829b6464841450f8b6562d361b67df661b22aae873b0823dfdd5e265d8e83bb",
+        "manifests/run-manifest.json": "dac8b38b427438f4f66c8076215fd67b2b374c5b4b203e10a36f0ac0b4304221",
+        "provenance/analysis_log.md": "fe0f3f67c532c89f9f6b21ceae8e4383fcd955ddcc29b8de52c1a6b770300258",
+        "provenance/commands.sh": "f1356ae7bf5636c6ff4b20f073b9eb2bd4bf9687bfea87829551b2f6680ee31d",
+        "provenance/environment.yml": "0859f0ffecc60ede91e7ad1b57f38046ddb91a9cb75914d33d029ffe9722556e",
+        "report/anat-bold-prep-report.md": "8a3891daf5c5345f1fe8167739e064d3c1c903c15e5f1d0722f06ffe9d7213dc"
+      },
+      "software": [
+        {
+          "container_digest": null,
+          "container_image": null,
+          "name": "clawneuro",
+          "role": "orchestration",
+          "source": null,
+          "version": "0.1.0"
+        },
+        {
+          "container_digest": null,
+          "container_image": "nipreps/fmriprep:23.1.2",
+          "name": "fmriprep",
+          "role": "preprocessing",
+          "source": null,
+          "version": null
+        }
+      ]
+    },
+    "requested_config": {
+      "anat_only": false,
+      "backend": "docker",
+      "bids_root": "/tmp/clawneuro-phase2-ds003020",
+      "container_image": "nipreps/fmriprep:23.1.2",
+      "execute": true,
+      "fmriprep_executable": "fmriprep",
+      "freesurfer_enabled": false,
+      "fs_license_file": null,
+      "mem_mb": 12000,
+      "notrack": true,
+      "nprocs": 2,
+      "omp_nthreads": 2,
+      "output_layout": "bids",
+      "output_root": "/tmp/clawneuro-m5-work/prep/run-output",
+      "output_spaces": [
+        "MNI152NLin2009cAsym:res-2"
+      ],
+      "participant_labels": [
+        "UTS01"
+      ],
+      "reuse_derivative_roots": [],
+      "work_dir": null
+    },
+    "result_summary": "Preprocessing execution failed; inspect the captured logs.",
+    "schema_version": "0.1.0",
+    "skill": {
+      "contract_path": "skills/anat_bold_prep/SKILL.md",
+      "kind": "preprocessing",
+      "name": "anat_bold_prep",
+      "version": "0.1.0"
+    },
+    "status": "failed",
+    "warnings": [
+      {
+        "code": "anat-bold-prep-execution-failed",
+        "hint": "Inspect the captured stdout and stderr logs.",
+        "message": "Preprocessing execution failed before the expected outputs were harvested.",
+        "severity": "error"
+      }
+    ]
+  }
+}
+Traceback (most recent call last):
+  File "/home/runner/work/NeuroImagingClaw/NeuroImagingClaw/benchmarks/run_phase2_public_anat_bold_prep.py", line 155, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/home/runner/work/NeuroImagingClaw/NeuroImagingClaw/benchmarks/run_phase2_public_anat_bold_prep.py", line 94, in main
+    raise RuntimeError("Phase 2 anat/BOLD preprocessing benchmark did not complete successfully.")
+RuntimeError: Phase 2 anat/BOLD preprocessing benchmark did not complete successfully.

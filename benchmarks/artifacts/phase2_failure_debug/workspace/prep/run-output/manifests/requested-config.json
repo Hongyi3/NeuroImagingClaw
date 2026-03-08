@@ -1,0 +1,24 @@
+{
+  "anat_only": false,
+  "backend": "docker",
+  "bids_root": "/tmp/clawneuro-phase2-ds003020",
+  "container_image": "nipreps/fmriprep:23.1.2",
+  "execute": true,
+  "fmriprep_executable": "fmriprep",
+  "freesurfer_enabled": false,
+  "fs_license_file": null,
+  "mem_mb": 12000,
+  "notrack": true,
+  "nprocs": 2,
+  "omp_nthreads": 2,
+  "output_layout": "bids",
+  "output_root": "/tmp/clawneuro-m5-work/prep/run-output",
+  "output_spaces": [
+    "MNI152NLin2009cAsym:res-2"
+  ],
+  "participant_labels": [
+    "UTS01"
+  ],
+  "reuse_derivative_roots": [],
+  "work_dir": null
+}
