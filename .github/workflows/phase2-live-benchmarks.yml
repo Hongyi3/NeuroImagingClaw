@@ -90,7 +90,11 @@ jobs:
             --dataset-root /tmp/clawneuro-phase2-ds003020 \
             --workspace /tmp/clawneuro-m5-work/mriqc \
             --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc \
-            --backend docker
+            --backend docker || {
+              echo "MRIQC benchmark workspace contents:"
+              find /tmp/clawneuro-m5-work/mriqc -maxdepth 4 -type f | sort || true
+              exit 1
+            }
 
       - name: Run anat/BOLD preprocessing Phase 2 benchmark
         run: |
@@ -98,7 +102,11 @@ jobs:
             --dataset-root /tmp/clawneuro-phase2-ds003020 \
             --workspace /tmp/clawneuro-m5-work/prep \
             --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep \
-            --backend docker
+            --backend docker || {
+              echo "Preprocessing benchmark workspace contents:"
+              find /tmp/clawneuro-m5-work/prep -maxdepth 4 -type f | sort || true
+              exit 1
+            }
 
       - name: Verify repository after benchmark execution
         run: |
@@ -113,6 +121,8 @@ jobs:
           path: |
             benchmarks/artifacts/phase2_ds003020_mriqc
             benchmarks/artifacts/phase2_ds003020_anat_bold_prep
+            /tmp/clawneuro-m5-work
+            /tmp/clawneuro-phase2-ds003020
 
       - name: Commit generated live benchmark artifacts
         if: success()

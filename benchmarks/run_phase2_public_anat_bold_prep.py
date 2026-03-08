@@ -78,6 +78,19 @@ def main() -> int:
         )
     )
     if result.status.value != "succeeded":
+        failure_payload = {
+            "status": result.status.value,
+            "summary": result.summary,
+            "warnings": [warning.model_dump(mode="json") for warning in result.warnings],
+            "artifacts": [artifact.model_dump(mode="json") for artifact in result.artifacts],
+        }
+        summary_path = output_root / "manifests" / "anat-bold-prep-summary.json"
+        if summary_path.exists():
+            failure_payload["summary_manifest"] = json.loads(summary_path.read_text(encoding="utf-8"))
+        run_manifest_path = output_root / "manifests" / "run-manifest.json"
+        if run_manifest_path.exists():
+            failure_payload["run_manifest"] = json.loads(run_manifest_path.read_text(encoding="utf-8"))
+        print(json.dumps(failure_payload, indent=2))
         raise RuntimeError("Phase 2 anat/BOLD preprocessing benchmark did not complete successfully.")
 
     copy_run_support_dirs(output_root, artifact_root)
