@@ -94,37 +94,12 @@ jobs:
             --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc \
             --backend docker 2>&1 | tee /tmp/mriqc-step.log
           command_status=${PIPESTATUS[0]}
-          tee_status=${PIPESTATUS[1]}
           set -e
-          COMMAND_STATUS="$command_status" TEE_STATUS="$tee_status" python - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-
-          Path("/tmp/mriqc-step-status.json").write_text(
-              json.dumps(
-                  {
-                      "command_status": int(os.environ["COMMAND_STATUS"]),
-                      "tee_status": int(os.environ["TEE_STATUS"]),
-                  },
-                  indent=2,
-                  sort_keys=True,
-              )
-              + "\n",
-              encoding="utf-8",
-          )
-          PY
+          printf '%s\n' "$command_status" > /tmp/mriqc-step-status.txt
 
       - name: Check MRIQC Phase 2 benchmark result
         run: |
-          command_status=$(python - <<'PY'
-          import json
-          from pathlib import Path
-
-          status = json.loads(Path("/tmp/mriqc-step-status.json").read_text(encoding="utf-8"))
-          print(status["command_status"])
-          PY
-          )
+          command_status=$(cat /tmp/mriqc-step-status.txt)
           if [ "$command_status" -ne 0 ]; then
             python - <<'PY'
             from pathlib import Path
@@ -148,37 +123,12 @@ jobs:
             --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep \
             --backend docker 2>&1 | tee /tmp/prep-step.log
           command_status=${PIPESTATUS[0]}
-          tee_status=${PIPESTATUS[1]}
           set -e
-          COMMAND_STATUS="$command_status" TEE_STATUS="$tee_status" python - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-
-          Path("/tmp/prep-step-status.json").write_text(
-              json.dumps(
-                  {
-                      "command_status": int(os.environ["COMMAND_STATUS"]),
-                      "tee_status": int(os.environ["TEE_STATUS"]),
-                  },
-                  indent=2,
-                  sort_keys=True,
-              )
-              + "\n",
-              encoding="utf-8",
-          )
-          PY
+          printf '%s\n' "$command_status" > /tmp/prep-step-status.txt
 
       - name: Check anat/BOLD preprocessing Phase 2 benchmark result
         run: |
-          command_status=$(python - <<'PY'
-          import json
-          from pathlib import Path
-
-          status = json.loads(Path("/tmp/prep-step-status.json").read_text(encoding="utf-8"))
-          print(status["command_status"])
-          PY
-          )
+          command_status=$(cat /tmp/prep-step-status.txt)
           if [ "$command_status" -ne 0 ]; then
             python - <<'PY'
             from pathlib import Path
