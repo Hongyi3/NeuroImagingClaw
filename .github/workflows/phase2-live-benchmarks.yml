@@ -8,13 +8,12 @@ on:
     paths:
       - ".github/workflows/phase2-live-benchmarks.yml"
       - "benchmarks/**"
+      - "!benchmarks/artifacts/phase2_ds003020_mriqc/**"
+      - "!benchmarks/artifacts/phase2_ds003020_anat_bold_prep/**"
       - "src/**"
       - "tests/**"
       - "docs/**"
       - "README.md"
-    paths-ignore:
-      - "benchmarks/artifacts/phase2_ds003020_mriqc/**"
-      - "benchmarks/artifacts/phase2_ds003020_anat_bold_prep/**"
 
 permissions:
   contents: write
