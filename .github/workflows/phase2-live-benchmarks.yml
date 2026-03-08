@@ -90,11 +90,21 @@ jobs:
             --dataset-root /tmp/clawneuro-phase2-ds003020 \
             --workspace /tmp/clawneuro-m5-work/mriqc \
             --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc \
-            --backend docker || {
+            --backend docker 2>&1 | tee /tmp/mriqc-step.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ]; then
+            python - <<'PY'
+            from pathlib import Path
+
+            text = Path("/tmp/mriqc-step.log").read_text(encoding="utf-8", errors="replace")
+            message = "\n".join(text.splitlines()[-80:])
+            message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+            print(f"::error title=MRIQC benchmark failed::{message}")
+            PY
               echo "MRIQC benchmark workspace contents:"
               find /tmp/clawneuro-m5-work/mriqc -maxdepth 4 -type f | sort || true
-              exit 1
-            }
+              exit "$status"
+          fi
 
       - name: Run anat/BOLD preprocessing Phase 2 benchmark
         run: |
@@ -102,11 +112,21 @@ jobs:
             --dataset-root /tmp/clawneuro-phase2-ds003020 \
             --workspace /tmp/clawneuro-m5-work/prep \
             --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep \
-            --backend docker || {
+            --backend docker 2>&1 | tee /tmp/prep-step.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ]; then
+            python - <<'PY'
+            from pathlib import Path
+
+            text = Path("/tmp/prep-step.log").read_text(encoding="utf-8", errors="replace")
+            message = "\n".join(text.splitlines()[-80:])
+            message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+            print(f"::error title=Preprocessing benchmark failed::{message}")
+            PY
               echo "Preprocessing benchmark workspace contents:"
               find /tmp/clawneuro-m5-work/prep -maxdepth 4 -type f | sort || true
-              exit 1
-            }
+              exit "$status"
+          fi
 
       - name: Verify repository after benchmark execution
         run: |
