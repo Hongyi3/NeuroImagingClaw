@@ -85,7 +85,7 @@ jobs:
           docker pull nipreps/mriqc:24.0.0
           docker pull nipreps/fmriprep:23.1.2
 
-      - name: Run MRIQC Phase 2 benchmark
+      - name: Run MRIQC Phase 2 benchmark command
         run: |
           set +e
           python benchmarks/run_phase2_public_mriqc.py \
@@ -93,9 +93,39 @@ jobs:
             --workspace /tmp/clawneuro-m5-work/mriqc \
             --artifact-root benchmarks/artifacts/phase2_ds003020_mriqc \
             --backend docker 2>&1 | tee /tmp/mriqc-step.log
-          status=${PIPESTATUS[0]}
+          command_status=${PIPESTATUS[0]}
+          tee_status=${PIPESTATUS[1]}
           set -e
-          if [ "$status" -ne 0 ]; then
+          COMMAND_STATUS="$command_status" TEE_STATUS="$tee_status" python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          Path("/tmp/mriqc-step-status.json").write_text(
+              json.dumps(
+                  {
+                      "command_status": int(os.environ["COMMAND_STATUS"]),
+                      "tee_status": int(os.environ["TEE_STATUS"]),
+                  },
+                  indent=2,
+                  sort_keys=True,
+              )
+              + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Check MRIQC Phase 2 benchmark result
+        run: |
+          command_status=$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          status = json.loads(Path("/tmp/mriqc-step-status.json").read_text(encoding="utf-8"))
+          print(status["command_status"])
+          PY
+          )
+          if [ "$command_status" -ne 0 ]; then
             python - <<'PY'
             from pathlib import Path
 
@@ -104,12 +134,12 @@ jobs:
             message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
             print(f"::error title=MRIQC benchmark failed::{message}")
             PY
-              echo "MRIQC benchmark workspace contents:"
-              find /tmp/clawneuro-m5-work/mriqc -maxdepth 4 -type f | sort || true
-              exit "$status"
+            echo "MRIQC benchmark workspace contents:"
+            find /tmp/clawneuro-m5-work/mriqc -maxdepth 4 -type f | sort || true
+            exit "$command_status"
           fi
 
-      - name: Run anat/BOLD preprocessing Phase 2 benchmark
+      - name: Run anat/BOLD preprocessing Phase 2 benchmark command
         run: |
           set +e
           python benchmarks/run_phase2_public_anat_bold_prep.py \
@@ -117,9 +147,39 @@ jobs:
             --workspace /tmp/clawneuro-m5-work/prep \
             --artifact-root benchmarks/artifacts/phase2_ds003020_anat_bold_prep \
             --backend docker 2>&1 | tee /tmp/prep-step.log
-          status=${PIPESTATUS[0]}
+          command_status=${PIPESTATUS[0]}
+          tee_status=${PIPESTATUS[1]}
           set -e
-          if [ "$status" -ne 0 ]; then
+          COMMAND_STATUS="$command_status" TEE_STATUS="$tee_status" python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          Path("/tmp/prep-step-status.json").write_text(
+              json.dumps(
+                  {
+                      "command_status": int(os.environ["COMMAND_STATUS"]),
+                      "tee_status": int(os.environ["TEE_STATUS"]),
+                  },
+                  indent=2,
+                  sort_keys=True,
+              )
+              + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Check anat/BOLD preprocessing Phase 2 benchmark result
+        run: |
+          command_status=$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          status = json.loads(Path("/tmp/prep-step-status.json").read_text(encoding="utf-8"))
+          print(status["command_status"])
+          PY
+          )
+          if [ "$command_status" -ne 0 ]; then
             python - <<'PY'
             from pathlib import Path
 
@@ -128,9 +188,9 @@ jobs:
             message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
             print(f"::error title=Preprocessing benchmark failed::{message}")
             PY
-              echo "Preprocessing benchmark workspace contents:"
-              find /tmp/clawneuro-m5-work/prep -maxdepth 4 -type f | sort || true
-              exit "$status"
+            echo "Preprocessing benchmark workspace contents:"
+            find /tmp/clawneuro-m5-work/prep -maxdepth 4 -type f | sort || true
+            exit "$command_status"
           fi
 
       - name: Verify repository after benchmark execution
